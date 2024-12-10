@@ -38,55 +38,57 @@ const Header = () => {
   const handleLogout = () => {};
 
   return (
-    <header>
+    <>
       {/* DESKTOP NAV */}
-      <div className="lg:flex hidden bg-orange-50 justify-between h-[80px] items-center px-10 fixed top-0 w-full z-20">
-        {/* LOGO */}
-        <Link to="/">
-          <BrandLogo />
-        </Link>
-        <nav>
-          <ul className="flex gap-4 font-semibold text-gray-700">
-            {menuItems}
-          </ul>
-        </nav>
+      <header className="sticky top-0 z-50 bg-orange-50">
+        <div className="z-20 mx-auto hidden h-[80px] w-full max-w-7xl items-center justify-between md:px-5 lg:flex lg:px-10">
+          {/* LOGO */}
+          <Link to="/">
+            <BrandLogo />
+          </Link>
+          <nav>
+            <ul className="flex gap-4 font-semibold text-gray-700">
+              {menuItems}
+            </ul>
+          </nav>
 
-        {/* LOGIN,PROFILE GROUP */}
-        <div className="flex items-center gap-4">
-          {role && (
-            <div title={name} className="flex items-center">
-              <ProfilePopover role={role} />
-            </div>
-          )}
+          {/* LOGIN,PROFILE GROUP */}
+          <div className="flex items-center gap-4">
+            {role && (
+              <div title={name} className="flex items-center">
+                <ProfilePopover role={role} />
+              </div>
+            )}
 
-          {!user && (
-            <div>
-              <Link to={`/login`}>
-                <Button>Login</Button>
-              </Link>
-            </div>
-          )}
+            {!user && (
+              <div>
+                <Link to={`/login`}>
+                  <Button>Login</Button>
+                </Link>
+              </div>
+            )}
 
-          {user && (
-            <div>
-              <Button onClick={handleLogout}>Logout</Button>
-            </div>
-          )}
+            {user && (
+              <div>
+                <Button onClick={handleLogout}>Logout</Button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* MOBILE NAV */}
-      <div className="lg:hidden">
-        <div className="flex px-2 bg-[#e9effd] h-[80px] items-center justify-between fixed top-0 w-full z-20">
+      <header className="lg:hidden">
+        <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-[#e9effd] px-2">
           <div onClick={() => setOpen(!open)} className="">
             {open && (
-              <button className="flex items-center justify-center w-10 h-10 text-3xl border text-primary border-primary">
+              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
                 <LuMenu />
               </button>
             )}
 
             {!open && (
-              <button className="flex items-center justify-center w-10 h-10 text-3xl border text-primary border-primary">
+              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
                 <LuX />
               </button>
             )}
@@ -117,15 +119,15 @@ const Header = () => {
 
         <nav className="">
           <ul
-            className={`flex bg-yellow-50/90 fixed top-[80px] z-20 h-full flex-col gap-2 font-semibold text-[#212529] pt-5 pl-8 w-[180px] -translate-x-[100%] transition-transform duration-500 ${
+            className={`fixed top-[80px] z-20 flex h-full w-[180px] -translate-x-[100%] flex-col gap-2 bg-yellow-50/90 pl-8 pt-5 font-semibold text-[#212529] transition-transform duration-500 ${
               !open && 'translate-x-0'
             }`}
           >
             {menuItems}
           </ul>
         </nav>
-      </div>
-    </header>
+      </header>
+    </>
   );
 };
 
@@ -150,11 +152,11 @@ const ProfilePopover = ({ role }: { role: string }) => {
             <div className="flex flex-col gap-2">
               <Link
                 to="/dashboard/admin"
-                className="border-b-2 border-b-transparent w-fit hover:border-b-2 hover:border-b-primary"
+                className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
               >
                 Dashboard
               </Link>
-              <button className="text-left border-b-2 border-b-transparent w-fit hover:border-b-2 hover:border-b-primary">
+              <button className="text-left border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary">
                 Logout
               </button>
             </div>
@@ -164,11 +166,11 @@ const ProfilePopover = ({ role }: { role: string }) => {
             <div className="flex flex-col gap-2">
               <Link
                 to="/dashboard/my-bookings"
-                className="border-b-2 border-b-transparent w-fit hover:border-b-2 hover:border-b-primary"
+                className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
               >
                 My booking
               </Link>
-              <button className="text-left border-b-2 border-b-transparent w-fit hover:border-b-2 hover:border-b-primary">
+              <button className="text-left border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary">
                 Logout
               </button>
             </div>
