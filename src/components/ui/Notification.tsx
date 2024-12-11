@@ -1,10 +1,10 @@
 const Notification = () => {
   return (
     <div className="">
-      <div className="z-50 px-4 py-3 text-white bg-green-600">
+      <div className="z-50 px-4 py-3 text-white bg-primary">
         <p className="text-sm font-medium text-center">
-          &quot;To plant a garden is to believe in tomorrow.&quot; — Audrey
-          Hepburn
+          Shop smarter, not harder! Discover unbeatable deals, exclusive
+          products.
         </p>
       </div>
     </div>

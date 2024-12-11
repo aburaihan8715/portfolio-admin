@@ -12,7 +12,7 @@ const date = new Date().toDateString().slice(4);
 const Footer = () => {
   const role = 'user';
   return (
-    <footer className="bg-orange-50">
+    <footer className="bg-green-100">
       <div className="w-full px-1 mx-auto text-gray-700 max-w-7xl md:px-10">
         <div className="flex flex-col flex-wrap gap-10 p-1 py-24 mx-auto border-b-2 md:flex-row md:flex-nowrap md:items-center lg:items-start">
           {/* BRAND LOGO */}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FilterBar from './FilterBar';
 import ProductCard from './ProductCard';
 import { useDebouncedCallback } from 'use-debounce';
+import SubHeading from '@/components/ui/SubHeading';
 
 const ProductList = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,9 +32,11 @@ const ProductList = () => {
   console.log(filterByMaxPrice);
 
   return (
-    <section>
+    <section className="mt-20">
       <div className="w-full px-2 mx-auto max-w-7xl sm:px-2 md:px-5 lg:px-10">
-        <h4>All Products</h4>
+        <div className="mb-2">
+          <SubHeading subHeading="All Products" />
+        </div>
         <FilterBar
           searchDebounce={searchDebounce}
           minCapacityDebounce={minCapacityDebounce}
@@ -42,7 +45,7 @@ const ProductList = () => {
           handleClearFilter={handleClearFilter}
           sortByPrice={sortByPrice}
         />
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5">
+        <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5">
           <ProductCard />
           <ProductCard />
           <ProductCard />

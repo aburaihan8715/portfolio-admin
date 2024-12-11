@@ -7,8 +7,8 @@ const DashboardLayout = () => {
     <>
       <div className="flex">
         <div>
-          <div className="sticky top-0 bottom-0 md:flex-1 md:h-screen ">
-            <div className=" bg-[#e9effd] h-screen md:p-5 p-1 md:pl-10">
+          <div className="sticky top-0 bottom-0 md:h-screen md:flex-1">
+            <div className="h-screen bg-[#e9effd] md:p-5 md:pl-10">
               <Link className="hidden md:block" to="/">
                 <BrandLogo />
               </Link>
@@ -19,7 +19,7 @@ const DashboardLayout = () => {
           </div>
         </div>
 
-        <div className="md:flex-[4] p-5 flex-1 overflow-auto">
+        <div className="mt-[80px] flex-1 overflow-auto p-5 sm:mt-0 md:flex-[4]">
           <Outlet />
         </div>
       </div>

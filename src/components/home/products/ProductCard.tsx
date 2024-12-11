@@ -12,7 +12,7 @@ const ProductCard = () => {
       <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
         <Link
           to={`/room-details/123`}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600"
+          className="px-4 py-2 text-sm font-medium text-white bg-green-900 rounded-md hover:bg-green-800"
         >
           See Details
         </Link>

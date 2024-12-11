@@ -11,6 +11,7 @@ import ActiveLink from '../ui/ActiveLink';
 import BrandLogo from '../ui/BrandLogo';
 import { Button } from '../ui/button';
 import defaultUser from '@/assets/images/defaultUser.png';
+import { ShoppingCart } from 'lucide-react';
 
 // HEADER COMPONENT
 const Header = () => {
@@ -40,7 +41,7 @@ const Header = () => {
   return (
     <>
       {/* DESKTOP NAV */}
-      <header className="sticky top-0 z-50 bg-orange-50">
+      <header className="sticky top-0 z-50 bg-green-100">
         <div className="z-20 mx-auto hidden h-[80px] w-full max-w-7xl items-center justify-between md:px-5 lg:flex lg:px-10">
           {/* LOGO */}
           <Link to="/">
@@ -54,6 +55,18 @@ const Header = () => {
 
           {/* LOGIN,PROFILE GROUP */}
           <div className="flex items-center gap-4">
+            {/* cart */}
+            <div className="mt-2">
+              <Link className="" to="/cart">
+                <div className="relative mr-2">
+                  <ShoppingCart className="text-base text-[#212529]" />
+                  <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
+                    {`0`}
+                  </span>
+                </div>
+              </Link>
+            </div>
+
             {role && (
               <div title={name} className="flex items-center">
                 <ProfilePopover role={role} />
@@ -95,6 +108,18 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* cart */}
+            <div className="mt-2">
+              <Link className="" to="/cart">
+                <div className="relative mr-2">
+                  <ShoppingCart className="text-base text-[#212529]" />
+                  <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
+                    {`0`}
+                  </span>
+                </div>
+              </Link>
+            </div>
+
             {role && (
               <div title={name} className="flex items-center">
                 <ProfilePopover role={role} />

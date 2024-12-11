@@ -3,10 +3,10 @@ import { LuShoppingBasket } from 'react-icons/lu';
 const BrandLogo = () => {
   return (
     <div className="flex items-center gap-1">
-      <p className="text-primary text-2xl">
+      <p className="text-2xl text-primary">
         <LuShoppingBasket />
       </p>
-      <p className="font-semibold text-gray-700 text-2xl bg-gradient-to-r from-blue-700 via-orange-600 to-blue-500 bg-clip-text text-transparent">
+      <p className="text-2xl font-semibold text-transparent text-gray-700 bg-gradient-to-r from-orange-600 via-green-700 to-fuchsia-700 bg-clip-text">
         EasyBuy
       </p>
     </div>
