@@ -95,13 +95,13 @@ const Header = () => {
         <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-[#e9effd] px-2">
           <div onClick={() => setOpen(!open)} className="">
             {open && (
-              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
+              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
                 <LuMenu />
               </button>
             )}
 
             {!open && (
-              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
+              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
                 <LuX />
               </button>
             )}
@@ -164,7 +164,7 @@ const ProfilePopover = ({ role }: { role: string }) => {
     <Popover>
       <PopoverTrigger>
         <img
-          className="object-cover w-10 h-10 rounded-full"
+          className="h-10 w-10 rounded-full object-cover"
           src={defaultUser}
           alt=""
         />
@@ -177,11 +177,11 @@ const ProfilePopover = ({ role }: { role: string }) => {
             <div className="flex flex-col gap-2">
               <Link
                 to="/dashboard/admin"
-                className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+                className="w-fit border-b-2 border-b-transparent hover:border-b-2 hover:border-b-primary"
               >
                 Dashboard
               </Link>
-              <button className="text-left border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary">
+              <button className="w-fit border-b-2 border-b-transparent text-left hover:border-b-2 hover:border-b-primary">
                 Logout
               </button>
             </div>
@@ -191,11 +191,11 @@ const ProfilePopover = ({ role }: { role: string }) => {
             <div className="flex flex-col gap-2">
               <Link
                 to="/dashboard/my-bookings"
-                className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+                className="w-fit border-b-2 border-b-transparent hover:border-b-2 hover:border-b-primary"
               >
                 My booking
               </Link>
-              <button className="text-left border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary">
+              <button className="w-fit border-b-2 border-b-transparent text-left hover:border-b-2 hover:border-b-primary">
                 Logout
               </button>
             </div>

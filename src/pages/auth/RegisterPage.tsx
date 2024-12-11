@@ -40,7 +40,7 @@ const RegisterPage = () => {
   return (
     <>
       {isPending && <LoadingWithOverlay />}
-      <div className="mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://cdn.pixabay.com/photo/2017/01/14/10/56/people-1979261_1280.jpg')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
+      <div className="mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/927629/pexels-photo-927629.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
         <div className="relative z-10 flex w-full justify-center">
