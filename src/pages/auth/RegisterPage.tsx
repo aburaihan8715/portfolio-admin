@@ -6,15 +6,20 @@ import { motion } from 'motion/react';
 
 import SectionHeading from '@/components/ui/SectionHeading';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { AuthSchema } from '@/schemas/auth.schema';
+import { Link, Navigate, useNavigate } from 'react-router';
+import { useUserRegisterMutation } from '@/redux/api/userApi';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { toast } from 'sonner';
+import { UserSchema } from '@/schemas/user.schema';
+import { setUser } from '@/redux/features/authSlice';
 import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
-import { Link } from 'react-router';
 
 type TRegisterFormData = {
-  username: string;
+  name: string;
   email: string;
   password: string;
   passwordConfirm: string;
+  role: 'vendor' | 'customer';
 };
 
 const RegisterPage = () => {
@@ -23,24 +28,51 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<TRegisterFormData>({
-    resolver: zodResolver(AuthSchema.registerSchema),
+    resolver: zodResolver(UserSchema.registerSchema),
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const isPending = false;
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
-
-  const onSubmit = (data: TRegisterFormData) => {
-    console.log(data);
+  const togglePasswordConfirmVisibility = () => {
+    setShowPasswordConfirm((prev) => !prev);
   };
+
+  const [userRegister, { isLoading }] = useUserRegisterMutation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+
+  const onSubmit = async (data: TRegisterFormData) => {
+    const toastId = toast.loading('loading...');
+    try {
+      const registerData = { ...data };
+      const res = await userRegister(registerData).unwrap();
+
+      const role = res.data?.user?.role;
+      // const user = verifyToken(res.data.accessToken);
+      dispatch(
+        setUser({ user: res.data?.user, token: res.data?.accessToken }),
+      );
+      toast.success('Register success!', { id: toastId, duration: 2000 });
+      navigate(`/dashboard/${role}/home`);
+    } catch (error) {
+      console.log(error);
+      toast.error('Registration failed!', { id: toastId, duration: 2000 });
+    }
+  };
+
+  if (user) {
+    return <Navigate to={`/dashboard/${user.role}/home`} replace={true} />;
+  }
 
   return (
     <>
-      {isPending && <LoadingWithOverlay />}
-      <div className="mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/927629/pexels-photo-927629.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
+      {isLoading && <LoadingWithOverlay />}
+      <div className="relative mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/927629/pexels-photo-927629.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
         <div className="relative z-10 flex w-full justify-center">
@@ -64,20 +96,18 @@ const RegisterPage = () => {
                     htmlFor="username"
                     className="block text-sm font-medium text-green-700"
                   >
-                    Username
+                    Name
                   </label>
                   <input
-                    id="username"
-                    {...register('username')}
+                    id="name"
+                    {...register('name')}
                     className={`mt-1 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm ${
-                      errors.username
-                        ? 'border-red-500'
-                        : 'border-gray-300'
+                      errors.name ? 'border-red-500' : 'border-gray-300'
                     } focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 sm:text-sm`}
                   />
-                  {errors.username && (
+                  {errors.name && (
                     <p className="mt-2 text-sm text-red-600">
-                      {errors.username.message}
+                      {errors.name.message}
                     </p>
                   )}
                 </motion.div>
@@ -162,7 +192,7 @@ const RegisterPage = () => {
                   <div className="relative">
                     <input
                       id="passwordConfirm"
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPasswordConfirm ? 'text' : 'password'}
                       {...register('passwordConfirm')}
                       className={`mt-1 block w-full rounded-md border ${
                         errors.passwordConfirm
@@ -176,15 +206,53 @@ const RegisterPage = () => {
                     />
                     <button
                       type="button"
-                      onClick={togglePasswordVisibility}
+                      onClick={togglePasswordConfirmVisibility}
                       className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-green-700"
                     >
-                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      {showPasswordConfirm ? <FaEyeSlash /> : <FaEye />}
                     </button>
                   </div>
-                  {errors.password && (
+                  {errors.passwordConfirm && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.password.message}
+                      {errors.passwordConfirm.message}
+                    </p>
+                  )}
+                </motion.div>
+              </div>
+
+              <div>
+                {/* Register As Section */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                >
+                  <label className="block text-sm font-medium text-green-700">
+                    Register As
+                  </label>
+                  <div className="mt-2 space-y-2">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        value="vendor"
+                        {...register('role')}
+                        className="mr-2 text-green-700 focus:ring-green-700"
+                      />
+                      Vendor
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        value="customer"
+                        {...register('role')}
+                        className="mr-2 text-green-700 focus:ring-green-700"
+                      />
+                      Customer
+                    </label>
+                  </div>
+                  {errors.role && (
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.role.message}
                     </p>
                   )}
                 </motion.div>

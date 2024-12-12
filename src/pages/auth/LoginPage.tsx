@@ -5,9 +5,13 @@ import { motion } from 'motion/react';
 
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
 import { AuthSchema } from '@/schemas/auth.schema';
-import { Link } from 'react-router';
+import { Link, Navigate, useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useLoginMutation } from '@/redux/api/authApi';
+import { toast } from 'sonner';
+import { setUser } from '@/redux/features/authSlice';
+import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
 
 interface LoginFormValues {
   email: string;
@@ -24,20 +28,44 @@ const LoginPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const isPending = false;
+  const user = useAppSelector((state) => state.auth.user);
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginMutation();
+
+  const onSubmit = async (data: LoginFormValues) => {
+    const toastId = toast.loading('loading...');
+    try {
+      const userInfo = {
+        email: data.email,
+        password: data.password,
+      };
+      const res = await login(userInfo).unwrap();
+      const role = res.data?.user?.role;
+      // const user = verifyToken(res.data.accessToken);
+      dispatch(
+        setUser({ user: res.data?.user, token: res.data?.accessToken }),
+      );
+      toast.success('login success!', { id: toastId, duration: 2000 });
+      navigate(`/dashboard/${role}/home`);
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong', { id: toastId, duration: 2000 });
+    }
   };
+
+  if (user) {
+    return <Navigate to={`/dashboard/${user.role}/home`} replace={true} />;
+  }
 
   return (
     <>
-      {isPending && <LoadingWithOverlay />}
+      {isLoading && <LoadingWithOverlay />}
       <div className="mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/5475752/pexels-photo-5475752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
         <div className="absolute inset-0 bg-black opacity-50"></div>
 

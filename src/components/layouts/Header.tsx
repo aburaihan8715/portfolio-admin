@@ -12,10 +12,14 @@ import BrandLogo from '../ui/BrandLogo';
 import { Button } from '../ui/button';
 import defaultUser from '@/assets/images/defaultUser.png';
 import { ShoppingCart } from 'lucide-react';
+import { useAppSelector } from '@/redux/hooks';
 
 // HEADER COMPONENT
 const Header = () => {
   const [open, setOpen] = useState(true);
+
+  const userData = useAppSelector((state) => state.auth.user);
+  console.log(userData);
 
   const role = 'admin';
   const name = 'Abu Raihan';
