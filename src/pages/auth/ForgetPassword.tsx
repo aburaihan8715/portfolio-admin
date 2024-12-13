@@ -1,9 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
 import { AuthSchema } from '@/schemas/auth.schema';
 import { Button } from '@/components/ui/button';
 import SubHeading from '@/components/ui/SubHeading';
+import { Link } from 'react-router';
+import { useForgetPasswordMutation } from '@/redux/api/authApi';
+import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
+import { toast } from 'sonner';
 
 type TForgetPasswordFormValues = {
   email: string;
@@ -18,17 +21,29 @@ const ForgetPassword: React.FC = () => {
     resolver: zodResolver(AuthSchema.forgetPasswordSchema),
   });
 
-  const isPending = false;
-
-  const onSubmit = (data: TForgetPasswordFormValues) => {
-    console.log(data);
+  const [forgetPasswordMutation, { isLoading }] =
+    useForgetPasswordMutation();
+  const onSubmit = async (data: TForgetPasswordFormValues) => {
+    const toastId = toast.loading('loading...');
+    try {
+      await forgetPasswordMutation(data).unwrap();
+      toast.success('Please check your email!', {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error: any) {
+      console.log(error);
+      const message =
+        error.data.message || 'Failed to forget password action!';
+      toast.error(message, { id: toastId, duration: 2000 });
+    }
   };
 
   return (
     <>
-      {isPending && <LoadingWithOverlay />}
+      {isLoading && <LoadingWithOverlay />}
       <div className="mt-[80px] flex h-screen items-center justify-center bg-gray-100 md:mt-0">
-        <div className="w-full max-w-md rounded-lg bg-white p-2 shadow-md md:p-8">
+        <div className="w-full max-w-md p-2 bg-white rounded-lg shadow-md md:p-8">
           <div>
             <SubHeading subHeading="Forget Password" />
           </div>
@@ -70,12 +85,12 @@ const ForgetPassword: React.FC = () => {
           </form>
 
           <div className="mt-4 text-center">
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="text-sm text-gray-600 hover:text-primary hover:underline"
             >
               Back to Login
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -12,6 +12,7 @@ import { useLoginMutation } from '@/redux/api/authApi';
 import { toast } from 'sonner';
 import { setUser } from '@/redux/features/authSlice';
 import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
+import { Button } from '@/components/ui/button';
 
 interface LoginFormValues {
   email: string;
@@ -32,7 +33,7 @@ const LoginPage = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const user = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector((state) => state?.auth?.user);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -53,9 +54,10 @@ const LoginPage = () => {
       );
       toast.success('login success!', { id: toastId, duration: 2000 });
       navigate(`/dashboard/${role}/home`);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      toast.error('Something went wrong', { id: toastId, duration: 2000 });
+      const message = error.data.message || 'Failed to login';
+      toast.error(message, { id: toastId, duration: 2000 });
     }
   };
 
@@ -69,14 +71,14 @@ const LoginPage = () => {
       <div className="mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/5475752/pexels-photo-5475752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
-        <div className="relative z-10 flex w-full justify-center">
+        <div className="relative z-10 flex justify-center w-full">
           <motion.div
-            className="w-full max-w-md rounded-lg bg-white p-1 shadow-lg md:p-8"
+            className="w-full max-w-md p-1 bg-white rounded-lg shadow-lg md:p-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-6 flex justify-center">
+            <div className="flex justify-center mb-6">
               <SectionHeading heading="Login" />
             </div>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -150,7 +152,7 @@ const LoginPage = () => {
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
-                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-green-700"
+                      className="absolute inset-y-0 flex items-center text-gray-500 right-3 hover:text-green-700"
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
@@ -164,12 +166,9 @@ const LoginPage = () => {
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  className="group relative flex w-full justify-center rounded-md border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-offset-2"
-                >
+                <Button className="w-full" type="submit">
                   Submit
-                </button>
+                </Button>
               </div>
             </form>
             <motion.div

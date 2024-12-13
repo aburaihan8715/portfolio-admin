@@ -16,9 +16,9 @@ const loginSchema = z.object({
 });
 
 const passwordChangeSchema = z.object({
-  currentPassword: z
+  oldPassword: z
     .string()
-    .min(8, 'Current password must be at least 8 characters long'),
+    .min(8, 'Old password must be at least 8 characters long'),
   newPassword: z
     .string()
     .min(8, 'New password must be at least 8 characters long'),

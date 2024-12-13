@@ -7,8 +7,8 @@ const DashboardLayout = () => {
     <>
       <div className="flex">
         <div>
-          <div className="sticky top-0 bottom-0 md:h-screen md:flex-1">
-            <div className="h-screen bg-[#e9effd] md:p-5 md:pl-10">
+          <div className="sticky bottom-0 top-0 md:h-screen md:flex-1">
+            <div className="h-screen bg-gradient-to-r from-violet-200 to-pink-200 md:p-5 md:pl-10">
               <Link className="hidden md:block" to="/">
                 <BrandLogo />
               </Link>

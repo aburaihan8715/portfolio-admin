@@ -33,11 +33,33 @@ const userApi = baseApi.injectEndpoints({
       providesTags: ['users'],
     }),
 
+    // GET ONE
+    getSingleUser: builder.query({
+      query: (id) => {
+        return {
+          url: `/api/v1/users/${id}`,
+          method: 'GET',
+        };
+      },
+    }),
+
     // UPDATE ROLE
-    makeAdminIntoDB: builder.mutation({
+    makeAdmin: builder.mutation({
       query: (data) => {
         return {
           url: `/api/v1/users/make-admin`,
+          method: 'PATCH',
+          body: data,
+        };
+      },
+      invalidatesTags: ['users'],
+    }),
+
+    // UPDATE ROLE
+    updateProfile: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/api/v1/users/profile-update`,
           method: 'PATCH',
           body: data,
         };
@@ -50,5 +72,7 @@ const userApi = baseApi.injectEndpoints({
 export const {
   useUserRegisterMutation,
   useGetAllUsersQuery,
-  useMakeAdminIntoDBMutation,
+  useMakeAdminMutation,
+  useGetSingleUserQuery,
+  useUpdateProfileMutation,
 } = userApi;

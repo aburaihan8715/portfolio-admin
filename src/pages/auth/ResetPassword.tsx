@@ -3,10 +3,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
 import { AuthSchema } from '@/schemas/auth.schema';
 import { Button } from '@/components/ui/button';
 import SubHeading from '@/components/ui/SubHeading';
+import { Link, useSearchParams } from 'react-router';
+import { useResetPasswordMutation } from '@/redux/api/authApi';
+import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
+import { toast } from 'sonner';
 
 type TResetPasswordFormValues = {
   newPassword: string;
@@ -14,6 +17,10 @@ type TResetPasswordFormValues = {
 
 const ResetPassword: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get('email');
+  const token = searchParams.get('token');
 
   const {
     register,
@@ -23,10 +30,28 @@ const ResetPassword: React.FC = () => {
     resolver: zodResolver(AuthSchema.resetPasswordSchema),
   });
 
-  const isPending = false;
+  const [resetPasswordMutation, { isLoading }] =
+    useResetPasswordMutation();
 
-  const onSubmit = (data: TResetPasswordFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: TResetPasswordFormValues) => {
+    const toastId = toast.loading('loading...');
+    try {
+      const passwordData = {
+        email,
+        token,
+        newPassword: data.newPassword,
+      };
+
+      await resetPasswordMutation(passwordData).unwrap();
+      toast.success('Password reset success!', {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error: any) {
+      console.log(error);
+      const message = error.data.message || 'Failed to reset password!';
+      toast.error(message, { id: toastId, duration: 2000 });
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -35,9 +60,9 @@ const ResetPassword: React.FC = () => {
 
   return (
     <>
-      {isPending && <LoadingWithOverlay />}
+      {isLoading && <LoadingWithOverlay />}
       <div className="mt-[80px] flex min-h-screen items-center justify-center bg-gray-100 md:mt-0">
-        <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-md">
+        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
           <div>
             <SubHeading subHeading="Reset Password" />
           </div>
@@ -68,7 +93,7 @@ const ResetPassword: React.FC = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-3 top-9 text-gray-600 focus:outline-none"
+                className="absolute text-gray-600 right-3 top-9 focus:outline-none"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -86,6 +111,15 @@ const ResetPassword: React.FC = () => {
               </Button>
             </div>
           </form>
+
+          <div className="mt-4 text-center">
+            <Link
+              to="/login"
+              className="text-sm text-gray-600 hover:text-primary hover:underline"
+            >
+              Back to Login
+            </Link>
+          </div>
         </div>
       </div>
     </>

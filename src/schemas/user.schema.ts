@@ -9,8 +9,10 @@ const registerSchema = z.object({
 });
 
 const updateProfileSchema = z.object({
-  name: z.string().min(2, 'Username must be at least 2 characters long'),
-  email: z.string().email('Invalid email address'),
+  name: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  address: z.string(),
 });
 
 export const UserSchema = {

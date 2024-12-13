@@ -12,18 +12,19 @@ import BrandLogo from '../ui/BrandLogo';
 import { Button } from '../ui/button';
 import defaultUser from '@/assets/images/defaultUser.png';
 import { ShoppingCart } from 'lucide-react';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { logout } from '@/redux/features/authSlice';
 
 // HEADER COMPONENT
 const Header = () => {
   const [open, setOpen] = useState(true);
 
-  const userData = useAppSelector((state) => state.auth.user);
-  console.log(userData);
-
-  const role = 'admin';
-  const name = 'Abu Raihan';
-  const user = true;
+  const user = useAppSelector((state) => state.auth.user);
+  // console.log(user);
+  const role = user?.role;
+  const name = user?.name || 'anonymous';
+  const profilePhoto = user?.profilePhoto || '';
+  const dispatch = useAppDispatch();
 
   const menuItems = (
     <>
@@ -40,7 +41,9 @@ const Header = () => {
     </>
   );
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <>
@@ -73,7 +76,11 @@ const Header = () => {
 
             {role && (
               <div title={name} className="flex items-center">
-                <ProfilePopover role={role} />
+                <ProfilePopover
+                  role={role}
+                  profilePhoto={profilePhoto}
+                  handleLogout={handleLogout}
+                />
               </div>
             )}
 
@@ -99,13 +106,13 @@ const Header = () => {
         <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-[#e9effd] px-2">
           <div onClick={() => setOpen(!open)} className="">
             {open && (
-              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
+              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
                 <LuMenu />
               </button>
             )}
 
             {!open && (
-              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
+              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
                 <LuX />
               </button>
             )}
@@ -126,7 +133,11 @@ const Header = () => {
 
             {role && (
               <div title={name} className="flex items-center">
-                <ProfilePopover role={role} />
+                <ProfilePopover
+                  role={role}
+                  profilePhoto={profilePhoto}
+                  handleLogout={handleLogout}
+                />
               </div>
             )}
 
@@ -163,48 +174,41 @@ const Header = () => {
 export default Header;
 
 // PROFILE POPOVER COMPONENT
-const ProfilePopover = ({ role }: { role: string }) => {
+const ProfilePopover = ({
+  role,
+  profilePhoto,
+  handleLogout,
+}: {
+  role: string;
+  profilePhoto: string;
+  handleLogout: () => void;
+}) => {
   return (
     <Popover>
       <PopoverTrigger>
         <img
-          className="h-10 w-10 rounded-full object-cover"
-          src={defaultUser}
+          className="object-cover w-10 h-10 rounded-full"
+          src={profilePhoto || defaultUser}
           alt=""
         />
       </PopoverTrigger>
       <PopoverContent className="mt-5">
         <h4 className="text-lg font-semibold">My account</h4>
         <hr className="my-2 border-gray-300" />
-        {role === 'admin' ? (
-          <>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/dashboard/admin"
-                className="w-fit border-b-2 border-b-transparent hover:border-b-2 hover:border-b-primary"
-              >
-                Dashboard
-              </Link>
-              <button className="w-fit border-b-2 border-b-transparent text-left hover:border-b-2 hover:border-b-primary">
-                Logout
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex flex-col gap-2">
-              <Link
-                to="/dashboard/my-bookings"
-                className="w-fit border-b-2 border-b-transparent hover:border-b-2 hover:border-b-primary"
-              >
-                My booking
-              </Link>
-              <button className="w-fit border-b-2 border-b-transparent text-left hover:border-b-2 hover:border-b-primary">
-                Logout
-              </button>
-            </div>
-          </>
-        )}
+        <div className="flex flex-col gap-2">
+          <Link
+            to={`/dashboard/${role}/home`}
+            className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+          >
+            Dashboard
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="text-left border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+          >
+            Logout
+          </button>
+        </div>
       </PopoverContent>
     </Popover>
   );
