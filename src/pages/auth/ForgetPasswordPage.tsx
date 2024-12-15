@@ -12,7 +12,7 @@ type TForgetPasswordFormValues = {
   email: string;
 };
 
-const ForgetPassword: React.FC = () => {
+const ForgetPasswordPage: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -43,7 +43,7 @@ const ForgetPassword: React.FC = () => {
     <>
       {isLoading && <LoadingWithOverlay />}
       <div className="mt-[80px] flex h-screen items-center justify-center bg-gray-100 md:mt-0">
-        <div className="w-full max-w-md p-2 bg-white rounded-lg shadow-md md:p-8">
+        <div className="w-full max-w-md rounded-lg bg-white p-2 shadow-md md:p-8">
           <div>
             <SubHeading subHeading="Forget Password" />
           </div>
@@ -98,4 +98,4 @@ const ForgetPassword: React.FC = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgetPasswordPage;

@@ -20,7 +20,8 @@ const Header = () => {
   const [open, setOpen] = useState(true);
 
   const user = useAppSelector((state) => state.auth.user);
-  // console.log(user);
+  const products = useAppSelector((state) => state.cart.products);
+
   const role = user?.role;
   const name = user?.name || 'anonymous';
   const profilePhoto = user?.profilePhoto || '';
@@ -31,13 +32,12 @@ const Header = () => {
       <li>
         <ActiveLink to="/">Home</ActiveLink>
       </li>
-      <li>
-        <ActiveLink to="/shops">Shops</ActiveLink>
-      </li>
 
-      <li>
-        <ActiveLink to={`/dashboard/${role}/home`}>Dashboard</ActiveLink>
-      </li>
+      {role && (
+        <li>
+          <ActiveLink to={`/dashboard/${role}/home`}>Dashboard</ActiveLink>
+        </li>
+      )}
     </>
   );
 
@@ -63,16 +63,18 @@ const Header = () => {
           {/* LOGIN,PROFILE GROUP */}
           <div className="flex items-center gap-4">
             {/* cart */}
-            <div className="mt-2">
-              <Link className="" to="/cart">
-                <div className="relative mr-2">
-                  <ShoppingCart className="text-base text-[#212529]" />
-                  <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
-                    {`0`}
-                  </span>
-                </div>
-              </Link>
-            </div>
+            {user && user.role === 'customer' && (
+              <div className="mt-2">
+                <Link className="" to="/cart">
+                  <div className="relative mr-2">
+                    <ShoppingCart className="text-base text-[#212529]" />
+                    <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
+                      {products?.length || 0}
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            )}
 
             {role && (
               <div title={name} className="flex items-center">
@@ -106,13 +108,13 @@ const Header = () => {
         <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-[#e9effd] px-2">
           <div onClick={() => setOpen(!open)} className="">
             {open && (
-              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
+              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
                 <LuMenu />
               </button>
             )}
 
             {!open && (
-              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
+              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
                 <LuX />
               </button>
             )}
@@ -125,7 +127,7 @@ const Header = () => {
                 <div className="relative mr-2">
                   <ShoppingCart className="text-base text-[#212529]" />
                   <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
-                    {`0`}
+                    {products?.length || 0}
                   </span>
                 </div>
               </Link>
@@ -187,7 +189,7 @@ const ProfilePopover = ({
     <Popover>
       <PopoverTrigger>
         <img
-          className="object-cover w-10 h-10 rounded-full"
+          className="h-10 w-10 rounded-full object-cover"
           src={profilePhoto || defaultUser}
           alt=""
         />
@@ -198,13 +200,13 @@ const ProfilePopover = ({
         <div className="flex flex-col gap-2">
           <Link
             to={`/dashboard/${role}/home`}
-            className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+            className="w-fit border-b-2 border-b-transparent hover:border-b-2 hover:border-b-primary"
           >
             Dashboard
           </Link>
           <button
             onClick={handleLogout}
-            className="text-left border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+            className="w-fit border-b-2 border-b-transparent text-left hover:border-b-2 hover:border-b-primary"
           >
             Logout
           </button>

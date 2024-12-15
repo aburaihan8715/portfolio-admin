@@ -22,7 +22,7 @@ interface IUpdateProfileFormData {
   address: string;
 }
 
-const UpdateProfile = () => {
+const UpdateProfilePage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -189,7 +189,7 @@ const UpdateProfile = () => {
               alt="User photo preview"
               width={96}
               height={96}
-              className="object-cover w-24 h-24 mb-4 rounded-full"
+              className="mb-4 h-24 w-24 rounded-full object-cover"
             />
           ) : (
             <img
@@ -201,7 +201,7 @@ const UpdateProfile = () => {
               alt="User photo"
               width={96}
               height={96}
-              className="object-cover w-24 h-24 mb-4 rounded-full"
+              className="mb-4 h-24 w-24 rounded-full object-cover"
             />
           )}
 
@@ -214,7 +214,7 @@ const UpdateProfile = () => {
           />
           <label
             htmlFor="photo"
-            className="flex items-center gap-2 ml-2 text-xl text-gray-700 cursor-pointer w-fit"
+            className="ml-2 flex w-fit cursor-pointer items-center gap-2 text-xl text-gray-700"
           >
             <FaPlusSquare />
             <span>Image</span>
@@ -224,7 +224,7 @@ const UpdateProfile = () => {
         <div className="text-right">
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 md:w-fit"
+            className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 md:w-fit"
           >
             Save update
           </button>
@@ -236,4 +236,4 @@ const UpdateProfile = () => {
   );
 };
 
-export default UpdateProfile;
+export default UpdateProfilePage;

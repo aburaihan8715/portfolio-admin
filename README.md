@@ -1,51 +1,74 @@
-# React + TypeScript + Vite
+# Project : asgmt9_multi_vendor_e_commerce_client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Live link client:
 
-Currently, two official plugins are available:
+https://asgmt9-multi-vendor-e-commerce.netlify.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Github link client:
 
-## Expanding the ESLint configuration
+https://github.com/aburaihan8715/asgmt9_multi_vendor_e_commerce_ui
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Live link server:
 
-- Configure the top-level `parserOptions` property like this:
+https://asgmt9-multi-vendor-e-commerce-api.vercel.app
+
+## Github link server:
+
+https://github.com/aburaihan8715/asgmt9_multi_vendor_e_commerce_api
+
+## Admin
+
+- email: aadmin@gmail.com
+- password: test1234
+
+## Vendor
+
+- email: avendor@gmail.com
+- password: test1234
+
+## Customer
+
+- email: acustomer@gmail.com
+- password: test1234
+
+## Technologies used:
+
+1. Typescript
+2. React
+3. Tailwind css
+
+## Packages used:
+
+1. redux and redux-toolkit
+2. react-hook-form
+3. zod
+4. react rating
+5. eslint
+6. stripe
+7. react icons
+8. motion
+9. react-router
+10. sooner
+
+## Deploy
+
+- Netlify
+
+## Features
+
+- authentication
+
+1. register user
+2. login user
+3. update profile
+4. change password
+5. forget and reset password
 
 ```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
-# asgmt9_multi_vendor_e_commerce_ui
+<p>======end=======</p>

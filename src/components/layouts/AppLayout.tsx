@@ -22,7 +22,7 @@ const AppLayout = () => {
           alignItems: 'center',
         }}
         smooth
-        color="#174A9E"
+        color="#085749"
       />
     </>
   );

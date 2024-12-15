@@ -13,7 +13,7 @@ interface IPasswordChangeFormValues {
   newPassword: string;
 }
 
-const ChangePassword = () => {
+const ChangePasswordPage = () => {
   const [showPassword, setShowPassword] = useState({
     oldPassword: false,
     newPassword: false,
@@ -55,7 +55,7 @@ const ChangePassword = () => {
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
-      <div className="mx-auto mt-12 bg-white rounded-md md:p-8">
+      <div className="mx-auto mt-12 rounded-md bg-white md:p-8">
         <div className="flex justify-center">
           <SectionHeading heading="Change Password" />
         </div>
@@ -78,7 +78,7 @@ const ChangePassword = () => {
               <button
                 type="button"
                 onClick={() => togglePasswordVisibility('oldPassword')}
-                className="absolute inset-y-0 flex items-center text-gray-500 right-3"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
               >
                 {showPassword.oldPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -107,7 +107,7 @@ const ChangePassword = () => {
               <button
                 type="button"
                 onClick={() => togglePasswordVisibility('newPassword')}
-                className="absolute inset-y-0 flex items-center text-gray-500 right-3"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
               >
                 {showPassword.newPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -123,7 +123,7 @@ const ChangePassword = () => {
           <div className="text-right">
             <button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600 md:w-fit"
+              className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 md:w-fit"
             >
               Change Password
             </button>
@@ -134,4 +134,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ChangePasswordPage;

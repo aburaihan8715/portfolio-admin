@@ -3,8 +3,9 @@ import FilterBar from './FilterBar';
 import ProductCard from './ProductCard';
 import { useDebouncedCallback } from 'use-debounce';
 import SubHeading from '@/components/ui/SubHeading';
+import { IProduct } from '@/interface/product.interface';
 
-const ProductList = () => {
+const ProductList = ({ products }: { products: IProduct[] }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterByMinCapacity, setFilterByMinCapacity] = useState('');
   const [filterByMaxPrice, setFilterByMaxPrice] = useState('');
@@ -33,7 +34,7 @@ const ProductList = () => {
 
   return (
     <section className="mt-20">
-      <div className="w-full px-2 mx-auto max-w-7xl sm:px-2 md:px-5 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-2 sm:px-2 md:px-5 lg:px-10">
         <div className="mb-2">
           <SubHeading subHeading="All Products" />
         </div>
@@ -46,18 +47,9 @@ const ProductList = () => {
           sortByPrice={sortByPrice}
         />
         <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
         </div>
       </div>
     </section>
