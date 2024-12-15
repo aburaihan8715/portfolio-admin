@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 
 import SectionHeading from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,9 @@ const PaymentOptionsPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
   // const navigate = useNavigate();
 
-  const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleOptionChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     const value = e.target.value;
     setSelectedOption(value);
   };

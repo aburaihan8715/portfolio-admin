@@ -1,4 +1,6 @@
 // NOTE: Here has been trying to followed React Stripe.js package
+
+/*
 import { loadStripe } from '@stripe/stripe-js';
 import {
   PaymentElement,
@@ -72,3 +74,4 @@ const CheckoutForm = () => {
     </form>
   );
 };
+*/
