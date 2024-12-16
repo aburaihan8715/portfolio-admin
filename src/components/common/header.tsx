@@ -7,8 +7,8 @@ import {
 } from '@/components/ui/popover';
 import { Link } from 'react-router';
 import { LuMenu, LuX } from 'react-icons/lu';
-import ActiveLink from '../ui/ActiveLink';
-import BrandLogo from '../ui/BrandLogo';
+import ActiveLink from './active-link';
+import BrandLogo from './brand-logo';
 import { Button } from '../ui/button';
 import defaultUser from '@/assets/images/defaultUser.png';
 import { ShoppingCart } from 'lucide-react';
@@ -35,7 +35,7 @@ const Header = () => {
 
       {role && (
         <li>
-          <ActiveLink to={`/dashboard/${role}/home`}>Dashboard</ActiveLink>
+          <ActiveLink to={`/${role}/dashboard`}>Dashboard</ActiveLink>
         </li>
       )}
     </>
@@ -88,7 +88,7 @@ const Header = () => {
 
             {!user && (
               <div>
-                <Link to={`/login`}>
+                <Link to={`/auth/login`}>
                   <Button>Login</Button>
                 </Link>
               </div>

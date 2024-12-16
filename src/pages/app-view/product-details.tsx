@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
+import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { IProduct } from '@/interface/product.interface';
 import { useGetSingleProductQuery } from '@/redux/api/productApi';
 import { addToCart } from '@/redux/features/cartSlice';

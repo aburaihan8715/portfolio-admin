@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import ProductCard from './product-card';
 import { useDebouncedCallback } from 'use-debounce';
-import SubHeading from '@/components/ui/SubHeading';
+import SubHeading from '@/components/common/sub-heading';
 import { IProduct } from '@/interface/product.interface';
 import FilterBar from './product-filter-bar';
 
@@ -35,7 +35,7 @@ const ProductList = ({ products }: { products: IProduct[] }) => {
 
   return (
     <section className="mt-20">
-      <div className="w-full px-2 mx-auto max-w-7xl sm:px-2 md:px-5 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-2 sm:px-2 md:px-5 lg:px-10">
         <div className="mb-2">
           <SubHeading subHeading="All Products" />
         </div>

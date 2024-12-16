@@ -1,8 +1,8 @@
 import { Link, Outlet } from 'react-router';
-import BrandLogo from '../ui/BrandLogo';
-import Sidebar from '../common/sidebar';
+import BrandLogo from '../common/brand-logo';
+import AdminSidebar from '../admin-view/sidebar';
 
-const CustomerLayout = () => {
+const AdminLayout = () => {
   return (
     <>
       <div className="flex">
@@ -13,7 +13,7 @@ const CustomerLayout = () => {
                 <BrandLogo />
               </Link>
               <div className="mt-5">
-                <Sidebar />
+                <AdminSidebar />
               </div>
             </div>
           </div>
@@ -27,4 +27,4 @@ const CustomerLayout = () => {
   );
 };
 
-export default CustomerLayout;
+export default AdminLayout;

@@ -1,63 +1,184 @@
-import { logout } from '@/redux/features/authSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { ReactNode, useEffect } from 'react';
-import { Navigate } from 'react-router';
+import { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router';
 
-type TProtectedRoute = {
+interface ICheckAuth {
+  isAuthenticated: boolean;
+  role: string;
   children: ReactNode;
-  role: string | undefined;
-};
+}
 
-const CheckAuth = ({ children, role }: TProtectedRoute) => {
-  const { user } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+function CheckAuth({ isAuthenticated, role, children }: ICheckAuth) {
+  const location = useLocation();
 
-  const isUnauthorized = role !== undefined && role !== user?.role;
+  // console.log(location.pathname, isAuthenticated, role);
 
-  useEffect(() => {
-    if (isUnauthorized) {
-      dispatch(logout());
+  // manage login and register
+  // if (
+  //   (location.pathname.includes('/login') ||
+  //     location.pathname.includes('/register')) &&
+  //   isAuthenticated
+  // ) {
+  //   if (role === 'admin') {
+  //     return <Navigate to="/admin/dashboard" />;
+  //   } else if (role === 'vendor') {
+  //     return <Navigate to="/vendor/dashboard" />;
+  //   } else if (role === 'customer') {
+  //     return <Navigate to="/customer/dashboard" />;
+  //   }
+  // }
+
+  // mange update-profile and change-password
+  if (
+    (location.pathname.includes('/update-profile') ||
+      location.pathname.includes('/change-password')) &&
+    !isAuthenticated
+  ) {
+    return <Navigate to="/auth/login" state={{ from: location }} />;
+  }
+
+  // manage reset-password and forget-password
+  if (
+    (location.pathname.includes('/reset-password') ||
+      location.pathname.includes('/forget-password')) &&
+    isAuthenticated
+  ) {
+    if (role === 'admin') {
+      return <Navigate to="/admin/dashboard" />;
+    } else if (role === 'vendor') {
+      return <Navigate to="/vendor/dashboard" />;
+    } else if (role === 'customer') {
+      return <Navigate to="/customer/dashboard" />;
     }
-  }, [isUnauthorized, dispatch]);
-
-  if (!user) {
-    return <Navigate to="/" replace={true} />;
   }
 
-  if (isUnauthorized) {
-    return <Navigate to="/" replace={true} />;
+  // manage admin
+  if (location.pathname.includes('admin') && isAuthenticated) {
+    if (role !== 'admin') {
+      return <Navigate to="/unauth" />;
+    }
+  }
+  if (location.pathname.includes('admin') && !isAuthenticated) {
+    return <Navigate to="/auth/login" state={{ from: location }} />;
   }
 
-  return children;
-};
+  // manage vendor
+  if (location.pathname.includes('vendor') && isAuthenticated) {
+    if (role !== 'vendor') {
+      return <Navigate to="/unauth" />;
+    }
+  }
+  if (location.pathname.includes('vendor') && !isAuthenticated) {
+    return <Navigate to="/auth/login" state={{ from: location }} />;
+  }
+
+  // manage customer
+  if (location.pathname.includes('customer') && isAuthenticated) {
+    if (role !== 'customer') {
+      return <Navigate to="/unauth" />;
+    }
+  }
+  if (location.pathname.includes('customer') && !isAuthenticated) {
+    return <Navigate to="/auth/login" state={{ from: location }} />;
+  }
+
+  // manage payment
+  if (location.pathname.includes('payment') && !isAuthenticated) {
+    return <Navigate to="/auth/login" state={{ from: location }} />;
+  }
+
+  return <>{children}</>;
+}
 
 export default CheckAuth;
 
-// import { ReactNode } from 'react';
-// import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-// import { logout } from '../../redux/features/auth/authSlice';
-// import { Navigate } from 'react-router-dom';
+/*
 
-// type TProtectedRoute = {
-//   children: ReactNode;
-//   role: string | undefined;
-// };
+// NOTE: optimize version
 
-// const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
-//   const { user } = useAppSelector((state) => state.auth);
+import { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router';
 
-//   const dispatch = useAppDispatch();
+interface ICheckAuth {
+  isAuthenticated: boolean;
+  role: string;
+  children: ReactNode;
+}
 
-//   if (!user) {
-//     return <Navigate to="/login" replace={true} />;
-//   }
+const roleDashboardMap: Record<string, string> = {
+  admin: '/admin/dashboard',
+  vendor: '/vendor/dashboard',
+  customer: '/customer/dashboard',
+};
 
-//   if (role !== undefined && role !== user?.role) {
-//     dispatch(logout());
-//     return <Navigate to="/login" replace={true} />;
-//   }
+function CheckAuth({ isAuthenticated, role, children }: ICheckAuth) {
+  const location = useLocation();
+  const { pathname } = location;
 
-//   return children;
-// };
+  console.log(pathname, isAuthenticated, role);
 
-// export default ProtectedRoute;
+  // Redirect authenticated users away from login/register pages
+  if (pathname.includes('/login') || pathname.includes('/register')) {
+    if (isAuthenticated) {
+      return <Navigate to={roleDashboardMap[role] || '/'} />;
+    }
+  }
+
+  // Redirect unauthenticated users from protected profile pages
+  if (
+    ['/update-profile', '/change-password'].some(path =>
+      pathname.includes(path)
+    ) &&
+    !isAuthenticated
+  ) {
+    return <Navigate to="/auth/login" state={{ from: location }} />;
+  }
+
+  // Redirect authenticated users from password-related pages
+  if (
+    ['/reset-password', '/forget-password'].some(path =>
+      pathname.includes(path)
+    ) &&
+    isAuthenticated
+  ) {
+    return <Navigate to={roleDashboardMap[role] || '/'} />;
+  }
+
+  // Protect role-specific areas
+  if (pathname.includes('/admin')) {
+    if (!isAuthenticated) {
+      return <Navigate to="/auth/login" state={{ from: location }} />;
+    }
+    if (role !== 'admin') {
+      return <Navigate to="/unauth" />;
+    }
+  }
+
+  if (pathname.includes('/vendor')) {
+    if (!isAuthenticated) {
+      return <Navigate to="/auth/login" state={{ from: location }} />;
+    }
+    if (role !== 'vendor') {
+      return <Navigate to="/unauth" />;
+    }
+  }
+
+  if (pathname.includes('/customer')) {
+    if (!isAuthenticated) {
+      return <Navigate to="/auth/login" state={{ from: location }} />;
+    }
+    if (role !== 'customer') {
+      return <Navigate to="/unauth" />;
+    }
+  }
+
+  // Protect payment routes
+  if (pathname.includes('/payment') && !isAuthenticated) {
+    return <Navigate to="/auth/login" state={{ from: location }} />;
+  }
+
+  return <>{children}</>;
+}
+
+export default CheckAuth;
+
+*/

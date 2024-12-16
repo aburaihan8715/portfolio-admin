@@ -1,17 +1,17 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import SectionHeading from '@/components/ui/SectionHeading';
+import SectionHeading from '@/components/common/section-heading';
 import { motion } from 'motion/react';
 
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AuthSchema } from '@/schemas/auth.schema';
-import { Link, Navigate, useNavigate } from 'react-router';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useLoginMutation } from '@/redux/api/authApi';
 import { toast } from 'sonner';
 import { setUser } from '@/redux/features/authSlice';
-import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
+import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { Button } from '@/components/ui/button';
 
 interface LoginFormValues {
@@ -33,10 +33,11 @@ const LoginPage = () => {
     setShowPassword((prev) => !prev);
   };
 
-  const user = useAppSelector((state) => state?.auth?.user);
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const user = useAppSelector((state) => state.auth.user);
+
   const [login, { isLoading }] = useLoginMutation();
 
   const onSubmit = async (data: LoginFormValues) => {
@@ -48,12 +49,13 @@ const LoginPage = () => {
       };
       const res = await login(userInfo).unwrap();
       const role = res.data?.user?.role;
-      // const user = verifyToken(res.data.accessToken);
+      const navigateTo =
+        location?.state?.from?.pathname || `/${role}/dashboard`;
       dispatch(
         setUser({ user: res.data?.user, token: res.data?.accessToken }),
       );
       toast.success('login success!', { id: toastId, duration: 2000 });
-      navigate(`/dashboard/${role}/home`);
+      navigate(`${navigateTo}`);
     } catch (error: any) {
       console.log(error);
       const message = error.data.message || 'Failed to login';
@@ -62,7 +64,7 @@ const LoginPage = () => {
   };
 
   if (user) {
-    return <Navigate to={`/dashboard/${user.role}/home`} replace={true} />;
+    return <Navigate to={`/${user.role}/dashboard`} replace={true} />;
   }
 
   return (
@@ -71,14 +73,14 @@ const LoginPage = () => {
       <div className="mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/5475752/pexels-photo-5475752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
-        <div className="relative z-10 flex justify-center w-full">
+        <div className="relative z-10 flex w-full justify-center">
           <motion.div
-            className="w-full max-w-md p-1 bg-white rounded-lg shadow-lg md:p-8"
+            className="w-full max-w-md rounded-lg bg-white p-1 shadow-lg md:p-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex justify-center mb-6">
+            <div className="mb-6 flex justify-center">
               <SectionHeading heading="Login" />
             </div>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -152,7 +154,7 @@ const LoginPage = () => {
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
-                      className="absolute inset-y-0 flex items-center text-gray-500 right-3 hover:text-green-700"
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-green-700"
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
@@ -180,7 +182,7 @@ const LoginPage = () => {
               <p className="text-sm text-gray-600">
                 Don&apos;t have an account?{' '}
                 <Link
-                  to="/register"
+                  to="/auth/register"
                   className="font-medium text-green-700 hover:text-green-800"
                 >
                   Register

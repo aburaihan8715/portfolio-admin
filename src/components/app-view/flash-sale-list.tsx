@@ -1,4 +1,4 @@
-import SubHeading from '@/components/ui/SubHeading';
+import SubHeading from '@/components/common/sub-heading';
 import FlashSaleCard from './flash-sale-card';
 import { useGetAllProductsQuery } from '@/redux/api/productApi';
 import { IProduct } from '@/interface/product.interface';
@@ -8,7 +8,7 @@ const FlashSaleList = () => {
   const products: IProduct[] = data?.data?.result || [];
   return (
     <section className="mt-20">
-      <div className="w-full px-2 mx-auto max-w-7xl sm:px-2 md:px-5 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-2 sm:px-2 md:px-5 lg:px-10">
         <div className="mb-2">
           <SubHeading subHeading="Flash Sale" />
         </div>

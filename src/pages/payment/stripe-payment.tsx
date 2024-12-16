@@ -1,4 +1,4 @@
-import SectionHeading from '@/components/ui/SectionHeading';
+import SectionHeading from '@/components/common/section-heading';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 

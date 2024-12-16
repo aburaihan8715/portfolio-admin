@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import SectionHeading from '@/components/ui/SectionHeading';
+import SectionHeading from '@/components/common/section-heading';
 import { IProduct } from '@/interface/product.interface';
 import {
   decrementQuantity,

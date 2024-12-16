@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useState } from 'react';
 
-import SectionHeading from '@/components/ui/SectionHeading';
+import SectionHeading from '@/components/common/section-heading';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 

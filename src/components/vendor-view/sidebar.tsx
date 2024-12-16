@@ -1,8 +1,6 @@
-import ActiveLink from '../ui/ActiveLink';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Link } from 'react-router';
-import { useAppSelector } from '@/redux/hooks';
 import {
   FaArrowLeft,
   FaBars,
@@ -10,98 +8,51 @@ import {
   FaHome,
   FaLock,
   FaPlus,
-  FaPlusSquare,
   FaShoppingCart,
 } from 'react-icons/fa';
+import ActiveLink from '../common/active-link';
 
-const Sidebar = () => {
+const VendorSidebar = () => {
   const [open, setOpen] = useState(true);
-
-  const user = useAppSelector((state) => state.auth.user);
 
   const menuItems = (
     <>
       <p className="text-xs font-semibold uppercase opacity-50">
         Dashboard
       </p>
-      <li className="flex ml-1">
+      <li className="ml-1 flex">
         <ActiveLink className="flex items-center gap-2" to="/">
           <FaArrowLeft className="text-base" />
           <span className="">Back</span>
         </ActiveLink>
       </li>
 
-      {/* admin */}
-      {user && user.role === 'admin' && (
-        <>
-          <li className="flex ml-1">
-            <ActiveLink
-              className="flex items-center gap-2"
-              to="/dashboard/admin/home"
-            >
-              <FaHome className="text-base" />
-              <span className="">Admin Home</span>
-            </ActiveLink>
-          </li>
-          <li className="flex ml-1">
-            <ActiveLink
-              className="flex items-center gap-2"
-              to="/dashboard/admin/make-admin"
-            >
-              <FaPlusSquare className="text-base" />
-              <span className="">Make Admin</span>
-            </ActiveLink>
-          </li>
-        </>
-      )}
+      <li className="ml-1 flex">
+        <ActiveLink
+          className="flex items-center gap-2"
+          to="/vendor/dashboard"
+        >
+          <FaHome className="text-base" />
+          <span className="">Dashboard</span>
+        </ActiveLink>
+      </li>
 
-      {/* vendor */}
-      {user && user.role === 'vendor' && (
-        <>
-          <li className="flex ml-1">
-            <ActiveLink
-              className="flex items-center gap-2"
-              to="/dashboard/vendor/home"
-            >
-              <FaHome className="text-base" />
-              <span className="">Vendor Home</span>
-            </ActiveLink>
-          </li>
-        </>
-      )}
-
-      {/* customer */}
-      {user && user.role === 'customer' && (
-        <>
-          <li className="flex ml-1">
-            <ActiveLink
-              className="flex items-center gap-2"
-              to="/dashboard/customer/home"
-            >
-              <FaHome className="text-base" />
-              <span className="">Customer Home</span>
-            </ActiveLink>
-          </li>
-        </>
-      )}
-
-      {/* common */}
       <p className="text-xs font-semibold uppercase opacity-50">
         Settings
       </p>
-      <li className="flex ml-1">
+      <li className="ml-1 flex">
         <ActiveLink
           className="flex items-center gap-2"
-          to="/dashboard/update-profile"
+          to="/auth/update-profile"
         >
           <FaCog className="text-base" />
           <span className="">Update Profile</span>
         </ActiveLink>
       </li>
-      <li className="flex ml-1">
+      <li className="ml-1 flex">
         <ActiveLink
           className="flex items-center gap-2"
-          to="/dashboard/change-password"
+          to="/auth/change-password"
         >
           <FaLock className="text-base" />
           <span className="">Change password</span>
@@ -122,13 +73,13 @@ const Sidebar = () => {
         <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-[#e9effd] px-2">
           <div onClick={() => setOpen(!open)} className="">
             {open && (
-              <button className="flex items-center justify-center w-10 h-10 text-2xl border border-primary text-primary">
+              <button className="flex h-10 w-10 items-center justify-center border border-primary text-2xl text-primary">
                 <FaBars />
               </button>
             )}
 
             {!open && (
-              <button className="flex items-center justify-center w-10 h-10 text-2xl border border-primary text-primary">
+              <button className="flex h-10 w-10 items-center justify-center border border-primary text-2xl text-primary">
                 <FaPlus />
               </button>
             )}
@@ -167,4 +118,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default VendorSidebar;

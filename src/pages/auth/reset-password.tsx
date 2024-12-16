@@ -5,10 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AuthSchema } from '@/schemas/auth.schema';
 import { Button } from '@/components/ui/button';
-import SubHeading from '@/components/ui/SubHeading';
+import SubHeading from '@/components/common/sub-heading';
 import { Link, useSearchParams } from 'react-router';
 import { useResetPasswordMutation } from '@/redux/api/authApi';
-import LoadingWithOverlay from '@/components/ui/LoadingWithOverlay';
+import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { toast } from 'sonner';
 
 type TResetPasswordFormValues = {
