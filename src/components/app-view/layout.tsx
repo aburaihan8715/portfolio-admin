@@ -1,8 +1,9 @@
 import { Outlet } from 'react-router';
-import Footer from './Footer';
-import Header from './Header';
+
 import Notification from '../ui/Notification';
 import ScrollToTop from 'react-scroll-to-top';
+import Header from '../common/header';
+import Footer from '../common/footer';
 
 const AppLayout = () => {
   return (

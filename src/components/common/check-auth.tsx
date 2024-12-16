@@ -8,7 +8,7 @@ type TProtectedRoute = {
   role: string | undefined;
 };
 
-const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
+const CheckAuth = ({ children, role }: TProtectedRoute) => {
   const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -31,7 +31,7 @@ const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
   return children;
 };
 
-export default ProtectedRoute;
+export default CheckAuth;
 
 // import { ReactNode } from 'react';
 // import { useAppDispatch, useAppSelector } from '../../redux/hooks';

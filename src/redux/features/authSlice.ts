@@ -5,11 +5,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface IAuthState {
   user: null | IUser;
   token: null | string;
+  isAuthenticated: boolean;
 }
 
 const initialState: IAuthState = {
   user: null,
   token: null,
+  isAuthenticated: false,
 };
 export const authSlice = createSlice({
   name: 'auth',
@@ -19,10 +21,12 @@ export const authSlice = createSlice({
       const { user, token } = action.payload;
       state.user = user;
       state.token = token;
+      state.isAuthenticated = true;
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.isAuthenticated = false;
     },
     updateProfile: (state, action) => {
       state.user = action.payload;

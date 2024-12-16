@@ -1,42 +1,40 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import AppLayout from './components/layouts/AppLayout';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
-import DashboardLayout from './components/layouts/DashboardLayout';
-import AdminHomePage from './pages/dashboard/admin/AdminHomePage';
-import VendorHomePage from './pages/dashboard/vendor/VendorHomePage';
-import CustomerHomePage from './pages/dashboard/customer/CustomerHomePage';
-import ResetPasswordPage from './pages/auth/ResetPasswordPage';
-import ForgetPasswordPage from './pages/auth/ForgetPasswordPage';
-import UpdateProfilePage from './pages/auth/UpdateProfilePage';
-import ChangePasswordPage from './pages/auth/ChangePasswordPage';
-import ProductDetailsPage from './pages/ProductDetailsPage';
-import CartPage from './pages/CartPage';
-import PaymentOptionsPage from './pages/payment/PaymentOptions';
-import StripePayment from './pages/payment/StripePayment';
-import ProtectedRoute from './components/layouts/ProtectedRoute';
+import AppLayout from './components/app-view/layout';
+
+import LoginPage from './pages/auth/login';
+import RegisterPage from './pages/auth/register';
+import AdminLayout from './components/admin-view/layout';
+
+import ResetPasswordPage from './pages/auth/reset-password';
+import ForgetPasswordPage from './pages/auth/forget-password';
+import UpdateProfilePage from './pages/auth/update-profile';
+import ChangePasswordPage from './pages/auth/change-password';
+import ProductDetailsPage from './pages/app-view/product-details';
+
+import PaymentOptionsPage from './pages/payment/payment-option';
+import StripePayment from './pages/payment/stripe-payment';
+
+import NotFound from './pages/not-found';
+import HomePage from './pages/app-view/home';
+import CartPage from './pages/app-view/cart';
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* ===== For AppLayout =====*/}
+        {/* ===== for app view =====*/}
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route
             path="product-details/:id"
             element={<ProductDetailsPage />}
           />
-          <Route
-            path="cart"
-            element={
-              <ProtectedRoute role="customer">
-                <CartPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="cart" element={<CartPage />} />
         </Route>
+
+        {/* ===== for admin =====*/}
+
+        {/* ===== for auth =====*/}
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="reset-password" element={<ResetPasswordPage />} />
@@ -44,15 +42,15 @@ const App = () => {
         <Route path="payment-options" element={<PaymentOptionsPage />} />
         <Route path="stripe-payment" element={<StripePayment />} />
 
-        {/*===== For DashboardLayout =====*/}
-        <Route path="dashboard" element={<DashboardLayout />}>
-          <Route path="admin/home" element={<AdminHomePage />} />
-          <Route path="vendor/home" element={<VendorHomePage />} />
-          <Route path="customer/home" element={<CustomerHomePage />} />
-
+        {/* ===== for vendor =====*/}
+        {/* ===== for customer =====*/}
+        <Route path="dashboard" element={<AdminLayout />}>
           <Route path="update-profile" element={<UpdateProfilePage />} />
           <Route path="change-password" element={<ChangePasswordPage />} />
         </Route>
+
+        {/* not found route */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

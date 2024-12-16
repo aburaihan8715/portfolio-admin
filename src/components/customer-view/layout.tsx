@@ -1,8 +1,8 @@
 import { Link, Outlet } from 'react-router';
 import BrandLogo from '../ui/BrandLogo';
-import Sidebar from './SideBar';
+import Sidebar from '../common/sidebar';
 
-const DashboardLayout = () => {
+const CustomerLayout = () => {
   return (
     <>
       <div className="flex">
@@ -27,4 +27,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default CustomerLayout;

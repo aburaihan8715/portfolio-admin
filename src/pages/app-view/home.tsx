@@ -1,6 +1,6 @@
-import CategoryList from '@/components/home/category/CategoryList';
-import FlashSaleList from '@/components/home/flashSale/FlashSaleList';
-import ProductList from '@/components/home/products/ProductList';
+import CategoryList from '@/components/app-view/category-list';
+import FlashSaleList from '@/components/app-view/flash-sale-list';
+import ProductList from '@/components/app-view/product-list';
 import { useGetAllProductsQuery } from '@/redux/api/productApi';
 
 const HomePage = () => {
