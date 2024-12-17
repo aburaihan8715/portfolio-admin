@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { updateProfile } from '@/redux/features/authSlice';
 import { useNavigate } from 'react-router';
 import { IUser } from '@/interface/user.interface';
+import { Button } from '@/components/ui/button';
 
 // Interface for the form data
 interface IUpdateProfileFormData {
@@ -228,12 +229,7 @@ const UpdateProfilePage = () => {
             </div>
 
             <div className="text-right">
-              <button
-                type="submit"
-                className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 md:w-fit"
-              >
-                Save update
-              </button>
+              <Button type="submit">Save update</Button>
             </div>
           </form>
         </div>

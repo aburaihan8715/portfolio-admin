@@ -4,10 +4,11 @@ import { useState } from 'react';
 import SectionHeading from '@/components/common/section-heading';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router';
 
 const PaymentOptionsPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleOptionChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -31,8 +32,7 @@ const PaymentOptionsPage = () => {
       );
     }
 
-    console.log(selectedOption);
-    // navigate(`/checkout/${selectedOption}`);
+    navigate(`/payment/stripe-payment`);
   };
 
   return (

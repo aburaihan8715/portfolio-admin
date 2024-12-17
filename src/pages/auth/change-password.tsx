@@ -7,6 +7,7 @@ import { AuthSchema } from '@/schemas/auth.schema';
 import { useChangePasswordMutation } from '@/redux/api/authApi';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 interface IPasswordChangeFormValues {
   oldPassword: string;
@@ -122,12 +123,7 @@ const ChangePasswordPage = () => {
 
             {/* Submit Button */}
             <div className="text-right">
-              <button
-                type="submit"
-                className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 md:w-fit"
-              >
-                Change Password
-              </button>
+              <Button type="submit">Change Password</Button>
             </div>
           </form>
         </div>

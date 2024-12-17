@@ -10,8 +10,7 @@ interface ICheckAuth {
 function CheckAuth({ isAuthenticated, role, children }: ICheckAuth) {
   const location = useLocation();
 
-  // console.log(location.pathname, isAuthenticated, role);
-
+  // NOTE: if we want to go desire page after login this code should not use
   // manage login and register
   // if (
   //   (location.pathname.includes('/login') ||
@@ -25,6 +24,16 @@ function CheckAuth({ isAuthenticated, role, children }: ICheckAuth) {
   //   } else if (role === 'customer') {
   //     return <Navigate to="/customer/dashboard" />;
   //   }
+  // }
+
+  // manage product details and cart
+
+  // if (
+  //   (location.pathname.includes('/product-details') ||
+  //     location.pathname.includes('/cart')) &&
+  //   !isAuthenticated
+  // ) {
+  //   return <Navigate to="/auth/login" state={{ from: location }} />;
   // }
 
   // mange update-profile and change-password

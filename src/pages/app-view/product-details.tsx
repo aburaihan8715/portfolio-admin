@@ -2,43 +2,72 @@ import { Button } from '@/components/ui/button';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { IProduct } from '@/interface/product.interface';
 import { useGetSingleProductQuery } from '@/redux/api/productApi';
-import { addToCart } from '@/redux/features/cartSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 
 import { Rating } from '@smastrom/react-rating';
-import { Link, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
+import {
+  useAddToCartMutation,
+  useGetCartQuery,
+} from '@/redux/api/cartApi';
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { data: productData, isLoading } = useGetSingleProductQuery(id);
+  const { data: productData, isLoading: isProductLoading } =
+    useGetSingleProductQuery(id);
   const product: IProduct = productData?.data || {};
-  const dispatch = useAppDispatch();
-  const products = useAppSelector((state) => state.cart.products);
 
-  const handleAddToCart = (product: IProduct) => {
-    if (product.inventoryCount < 1)
+  const { data: cartData } = useGetCartQuery(null);
+  const [addToCart, { isLoading: isAddToCartLoading }] =
+    useAddToCartMutation();
+
+  const cartItems = cartData?.data[0]?.items || [];
+
+  console.log('cartItems', cartItems);
+
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const handleAddToCart = async (product: IProduct) => {
+    if (!isAuthenticated) {
+      toast.warning('Please login first!!');
+      return navigate('/auth/login');
+    }
+
+    if (product.inventoryCount < 1) {
       return toast.warning('Product is not available!!');
+    }
 
-    const isAlreadyAdded = products.find(
-      (item) => item._id === product._id,
+    const isAlreadyAdded = cartItems.find(
+      (item: any) => item.product._id === product._id,
     );
 
-    if (isAlreadyAdded) return toast.warning('Product already added!');
+    if (isAlreadyAdded) {
+      return toast.warning('Product already added!');
+    }
 
-    dispatch(addToCart({ ...product, quantity: 1 }));
+    const toastId = toast.loading('loading...');
 
-    toast.success('Product added successfully!');
+    const cartData = { items: [{ product: product._id }] };
+    try {
+      await addToCart(cartData).unwrap();
+      toast.success('Product added successfully!', { id: toastId });
+    } catch (error: any) {
+      console.log(error);
+      const message = error.data.message || 'Failed to add product!';
+      toast.error(message, { id: toastId, duration: 2000 });
+    }
   };
 
   return (
     <>
-      {isLoading && <LoadingWithOverlay />}
+      {(isProductLoading || isAddToCartLoading) && <LoadingWithOverlay />}
       <section className="h-full px-1 py-10 md:h-[90vh] md:px-10 md:py-20">
-        <div className="flex h-full flex-col gap-10 md:flex-row">
-          <div className="h-full flex-1">
+        <div className="flex flex-col h-full gap-10 md:flex-row">
+          <div className="flex-1 h-full">
             <img
-              className="h-full w-full rounded object-cover"
+              className="object-cover w-full h-full rounded"
               src="https://images.pexels.com/photos/927629/pexels-photo-927629.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt=""
             />

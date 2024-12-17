@@ -36,7 +36,17 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         {/* ===== for app view =====*/}
-        <Route path="/" element={<AppLayout />}>
+        <Route
+          path="/"
+          element={
+            <CheckAuth
+              isAuthenticated={isAuthenticated as boolean}
+              role={role}
+            >
+              <AppLayout />
+            </CheckAuth>
+          }
+        >
           <Route index element={<HomePage />} />
           <Route
             path="product-details/:id"

@@ -130,6 +130,9 @@ const CheckoutForm = () => {
         setTransactionId(paymentIntent.id);
         console.log('Payment succeeded:', paymentIntent);
 
+        setIsLoading(false);
+        return;
+
         // const paymentInfo = {
         //   userEmail: user?.email,
         //   transactionId: paymentIntent.id,

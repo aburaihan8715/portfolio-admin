@@ -14,18 +14,24 @@ import defaultUser from '@/assets/images/defaultUser.png';
 import { ShoppingCart } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { logout } from '@/redux/features/authSlice';
+import { useGetCartQuery } from '@/redux/api/cartApi';
 
 // HEADER COMPONENT
 const Header = () => {
   const [open, setOpen] = useState(true);
 
   const user = useAppSelector((state) => state.auth.user);
-  const products = useAppSelector((state) => state.cart.products);
+  const dispatch = useAppDispatch();
 
+  const { data: cartData, isLoading: cartIsLoading } =
+    useGetCartQuery(null);
+
+  const cart = cartData?.data || [];
+
+  const items = cart[0]?.items?.length || 0;
   const role = user?.role;
   const name = user?.name || 'anonymous';
   const profilePhoto = user?.profilePhoto || '';
-  const dispatch = useAppDispatch();
 
   const menuItems = (
     <>
@@ -45,6 +51,9 @@ const Header = () => {
     dispatch(logout());
   };
 
+  if (cartIsLoading) {
+    return 'loading...';
+  }
   return (
     <>
       {/* DESKTOP NAV */}
@@ -69,7 +78,7 @@ const Header = () => {
                   <div className="relative mr-2">
                     <ShoppingCart className="text-base text-[#212529]" />
                     <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
-                      {products?.length || 0}
+                      {items}
                     </span>
                   </div>
                 </Link>
@@ -108,13 +117,13 @@ const Header = () => {
         <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-[#e9effd] px-2">
           <div onClick={() => setOpen(!open)} className="">
             {open && (
-              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
+              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
                 <LuMenu />
               </button>
             )}
 
             {!open && (
-              <button className="flex h-10 w-10 items-center justify-center border border-primary text-3xl text-primary">
+              <button className="flex items-center justify-center w-10 h-10 text-3xl border border-primary text-primary">
                 <LuX />
               </button>
             )}
@@ -127,7 +136,7 @@ const Header = () => {
                 <div className="relative mr-2">
                   <ShoppingCart className="text-base text-[#212529]" />
                   <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
-                    {products?.length || 0}
+                    {items}
                   </span>
                 </div>
               </Link>
@@ -189,7 +198,7 @@ const ProfilePopover = ({
     <Popover>
       <PopoverTrigger>
         <img
-          className="h-10 w-10 rounded-full object-cover"
+          className="object-cover w-10 h-10 rounded-full"
           src={profilePhoto || defaultUser}
           alt=""
         />
@@ -199,14 +208,28 @@ const ProfilePopover = ({
         <hr className="my-2 border-gray-300" />
         <div className="flex flex-col gap-2">
           <Link
-            to={`/dashboard/${role}/home`}
-            className="w-fit border-b-2 border-b-transparent hover:border-b-2 hover:border-b-primary"
+            to={`/${role}/dashboard`}
+            className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
           >
             Dashboard
           </Link>
+          <Link
+            to={`/auth/update-profile`}
+            className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+          >
+            Update profile
+          </Link>
+
+          <Link
+            to={`auth/change-password`}
+            className="border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
+          >
+            Change password
+          </Link>
+
           <button
             onClick={handleLogout}
-            className="w-fit border-b-2 border-b-transparent text-left hover:border-b-2 hover:border-b-primary"
+            className="text-left border-b-2 w-fit border-b-transparent hover:border-b-2 hover:border-b-primary"
           >
             Logout
           </button>

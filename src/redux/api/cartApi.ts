@@ -2,7 +2,7 @@ import { baseApi } from '@/redux/api/baseApi';
 
 const cartApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // CREATE CART
+    // Add to cart mutation
     addToCart: builder.mutation({
       query: (data) => ({
         url: '/api/v1/carts',
@@ -12,49 +12,61 @@ const cartApi = baseApi.injectEndpoints({
       invalidatesTags: ['carts'],
     }),
 
-    // GET CART
-    // getCart: builder.query({
-    //   query: ({ searchQuery, page, limit }) => {
-    //     let queryString = `/api/v1/products`;
-
-    //     const params = new URLSearchParams();
-
-    //     if (searchQuery) params.append('searchTerm', searchQuery);
-    //     if (page) params.append('page', page);
-    //     if (limit) params.append('limit', limit);
-
-    //     if (params.toString()) queryString += `?${params.toString()}`;
-
-    //     return {
-    //       url: queryString,
-    //       method: 'GET',
-    //     };
-    //   },
-    //   providesTags: ['products'],
-    // }),
-
-    // GET SINGLE PRODUCT
+    // Get cart items
     getCart: builder.query({
-      query: () => {
-        return {
-          url: `/api/v1/carts`,
-          method: 'GET',
-        };
-      },
+      query: () => ({
+        url: `/api/v1/carts`,
+        method: 'GET',
+      }),
+      providesTags: ['carts'],
     }),
 
-    // UPDATE PRODUCT
-    // updateProduct: builder.mutation({
-    //   query: ({ id, dataForUpdate }) => {
-    //     return {
-    //       url: `/api/v1/products/${id}`,
-    //       method: 'PATCH',
-    //       body: dataForUpdate,
-    //     };
-    //   },
-    //   invalidatesTags: ['products'],
-    // }),
+    // Increment quantity mutation
+    incrementQuantity: builder.mutation({
+      query: ({ productId, quantity }) => ({
+        url: `/api/v1/carts/increment/${productId}`,
+        method: 'PATCH',
+        body: { quantity: quantity + 1 }, // Update quantity
+      }),
+      invalidatesTags: ['carts'],
+    }),
+
+    // Decrement quantity mutation
+    decrementQuantity: builder.mutation({
+      query: ({ productId, quantity }) => ({
+        url: `/api/v1/carts/decrement/${productId}`,
+        method: 'PATCH',
+        body: { quantity: quantity - 1 }, // Update quantity
+      }),
+      invalidatesTags: ['carts'],
+    }),
+
+    // Remove item
+    removeCartItem: builder.mutation({
+      query: (productId) => ({
+        url: `/api/v1/carts/remove/${productId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['carts'],
+    }),
+
+    // Delete a cart item (soft delete)
+    clearCart: builder.mutation({
+      query: (cartId) => ({
+        url: `/api/v1/carts/${cartId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['carts'],
+    }),
   }),
 });
 
-export const { useAddToCartMutation, useGetCartQuery } = cartApi;
+// Export hooks for the endpoints
+export const {
+  useAddToCartMutation,
+  useGetCartQuery,
+  useIncrementQuantityMutation,
+  useDecrementQuantityMutation,
+  useClearCartMutation,
+  useRemoveCartItemMutation,
+} = cartApi;
