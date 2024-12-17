@@ -3,9 +3,9 @@ import { RootState } from '../store';
 
 const baseQuery = fetchBaseQuery({
   baseUrl:
-    process.env.NODE_ENV === 'production'
-      ? import.meta.env.VITE_BASE_URL
-      : 'http://localhost:5000',
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:5000'
+      : import.meta.env.VITE_BASE_URL,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
