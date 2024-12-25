@@ -6,14 +6,13 @@ import { motion } from 'motion/react';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { AuthSchema } from '@/schemas/auth.schema';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { useAppDispatch } from '@/redux/hooks';
 import { useLoginMutation } from '@/redux/api/authApi';
 import { toast } from 'sonner';
 import { setUser } from '@/redux/features/authSlice';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { Button } from '@/components/ui/button';
-import { addUserId } from '@/redux/features/cartSlice';
 
 interface LoginFormValues {
   email: string;
@@ -37,7 +36,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const user = useAppSelector((state) => state.auth.user);
+  // const user = useAppSelector((state) => state.auth.user);
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -50,13 +49,12 @@ const LoginPage = () => {
       };
       const res = await login(userInfo).unwrap();
       const role = res.data?.user?.role;
-      const userId = res.data?.user?._id;
       const navigateTo =
         location?.state?.from?.pathname || `/${role}/dashboard`;
       dispatch(
         setUser({ user: res.data?.user, token: res.data?.accessToken }),
       );
-      dispatch(addUserId(userId));
+
       toast.success('login success!', { id: toastId, duration: 2000 });
       navigate(`${navigateTo}`);
     } catch (error: any) {
@@ -66,9 +64,9 @@ const LoginPage = () => {
     }
   };
 
-  if (user) {
-    return <Navigate to={`/${user.role}/dashboard`} replace={true} />;
-  }
+  // if (user) {
+  //   return <Navigate to={`/${user.role}/dashboard`} replace={true} />;
+  // }
 
   return (
     <>
@@ -185,7 +183,7 @@ const LoginPage = () => {
               <p className="text-sm text-gray-600">
                 Don&apos;t have an account?{' '}
                 <Link
-                  to="/auth/register"
+                  to="/register"
                   className="font-medium text-green-700 hover:text-green-800"
                 >
                   Register

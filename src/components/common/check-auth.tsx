@@ -70,31 +70,6 @@ function CheckAuth({ isAuthenticated, role, children }: ICheckAuth) {
     return <Navigate to="/auth/login" state={{ from: location }} />;
   }
 
-  // manage vendor
-  if (location.pathname.includes('vendor') && isAuthenticated) {
-    if (role !== 'vendor') {
-      return <Navigate to="/unauth" />;
-    }
-  }
-  if (location.pathname.includes('vendor') && !isAuthenticated) {
-    return <Navigate to="/auth/login" state={{ from: location }} />;
-  }
-
-  // manage customer
-  if (location.pathname.includes('customer') && isAuthenticated) {
-    if (role !== 'customer') {
-      return <Navigate to="/unauth" />;
-    }
-  }
-  if (location.pathname.includes('customer') && !isAuthenticated) {
-    return <Navigate to="/auth/login" state={{ from: location }} />;
-  }
-
-  // manage payment
-  if (location.pathname.includes('payment') && !isAuthenticated) {
-    return <Navigate to="/auth/login" state={{ from: location }} />;
-  }
-
   return <>{children}</>;
 }
 

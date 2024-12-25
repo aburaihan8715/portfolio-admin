@@ -43,7 +43,7 @@ const ForgetPasswordPage: React.FC = () => {
     <>
       {isLoading && <LoadingWithOverlay />}
       <div className="mt-[80px] flex h-screen items-center justify-center bg-gray-100 md:mt-0">
-        <div className="w-full max-w-md rounded-lg bg-white p-2 shadow-md md:p-8">
+        <div className="w-full max-w-md p-2 bg-white rounded-lg shadow-md md:p-8">
           <div>
             <SubHeading subHeading="Forget Password" />
           </div>
@@ -86,7 +86,7 @@ const ForgetPasswordPage: React.FC = () => {
 
           <div className="mt-4 text-center">
             <Link
-              to="/login"
+              to="/"
               className="text-sm text-gray-600 hover:text-primary hover:underline"
             >
               Back to Login

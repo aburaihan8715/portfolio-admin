@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { Button } from '../ui/button';
-import { Link } from 'react-router';
 import {
   FaArrowLeft,
   FaBars,
   FaCog,
   FaHome,
   FaLock,
-  FaPlus,
-  FaShoppingCart,
+  FaRegWindowClose,
 } from 'react-icons/fa';
 import ActiveLink from '../common/active-link';
 
@@ -19,14 +17,14 @@ const AdminSidebar = () => {
       <p className="text-xs font-semibold uppercase opacity-50">
         Dashboard
       </p>
-      <li className="ml-1 flex">
+      <li className="flex ml-1">
         <ActiveLink className="flex items-center gap-2" to="/">
           <FaArrowLeft className="text-base" />
           <span className="">Back</span>
         </ActiveLink>
       </li>
 
-      <li className="ml-1 flex">
+      <li className="flex ml-1">
         <ActiveLink
           className="flex items-center gap-2"
           to="/admin/dashboard"
@@ -39,19 +37,19 @@ const AdminSidebar = () => {
       <p className="text-xs font-semibold uppercase opacity-50">
         Settings
       </p>
-      <li className="ml-1 flex">
+      <li className="flex ml-1">
         <ActiveLink
           className="flex items-center gap-2"
-          to="/auth/update-profile"
+          to="/update-profile"
         >
           <FaCog className="text-base" />
           <span className="">Update Profile</span>
         </ActiveLink>
       </li>
-      <li className="ml-1 flex">
+      <li className="flex ml-1">
         <ActiveLink
           className="flex items-center gap-2"
-          to="/auth/change-password"
+          to="/change-password"
         >
           <FaLock className="text-base" />
           <span className="">Change password</span>
@@ -72,31 +70,19 @@ const AdminSidebar = () => {
         <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-[#e9effd] px-2">
           <div onClick={() => setOpen(!open)} className="">
             {open && (
-              <button className="flex h-10 w-10 items-center justify-center border border-primary text-2xl text-primary">
+              <button className="flex items-center justify-center w-10 h-10 text-2xl border border-primary text-primary">
                 <FaBars />
               </button>
             )}
 
             {!open && (
-              <button className="flex h-10 w-10 items-center justify-center border border-primary text-2xl text-primary">
-                <FaPlus />
+              <button className="flex items-center justify-center w-10 h-10 text-2xl border border-primary text-primary">
+                <FaRegWindowClose />
               </button>
             )}
           </div>
 
           <div className="flex gap-5">
-            {/* cart */}
-            <div className="mt-2">
-              <Link className="" to="/cart">
-                <div className="relative mr-2">
-                  <FaShoppingCart className="text-base text-[#212529]" />
-                  <span className="absolute -top-2 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-primary font-semibold text-[#f8f9fa]">
-                    {`0`}
-                  </span>
-                </div>
-              </Link>
-            </div>
-
             <div>
               <Button>Logout</Button>
             </div>

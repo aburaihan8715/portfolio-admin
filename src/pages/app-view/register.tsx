@@ -6,15 +6,14 @@ import { motion } from 'motion/react';
 
 import SectionHeading from '@/components/common/section-heading';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link, Navigate, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useUserRegisterMutation } from '@/redux/api/userApi';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import { toast } from 'sonner';
 import { UserSchema } from '@/schemas/user.schema';
 import { setUser } from '@/redux/features/authSlice';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { Button } from '@/components/ui/button';
-import { addUserId } from '@/redux/features/cartSlice';
 
 type TRegisterFormData = {
   name: string;
@@ -46,7 +45,7 @@ const RegisterPage = () => {
   const [userRegister, { isLoading }] = useUserRegisterMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
+  // const user = useAppSelector((state) => state.auth.user);
 
   const onSubmit = async (data: TRegisterFormData) => {
     const toastId = toast.loading('loading...');
@@ -55,11 +54,11 @@ const RegisterPage = () => {
       const res = await userRegister(registerData).unwrap();
 
       const role = res.data?.user?.role;
-      const userId = res.data?.user?._id;
+
       dispatch(
         setUser({ user: res.data?.user, token: res.data?.accessToken }),
       );
-      dispatch(addUserId(userId));
+
       toast.success('Register success!', { id: toastId, duration: 2000 });
       navigate(`/dashboard/${role}/home`);
     } catch (error: any) {
@@ -69,9 +68,9 @@ const RegisterPage = () => {
     }
   };
 
-  if (user) {
-    return <Navigate to={`/${user.role}/dashboard`} replace={true} />;
-  }
+  // if (user) {
+  //   return <Navigate to={`/${user.role}/dashboard`} replace={true} />;
+  // }
 
   return (
     <>
@@ -278,7 +277,7 @@ const RegisterPage = () => {
               <p className="text-sm text-gray-600">
                 Already have an account?{' '}
                 <Link
-                  to="/auth/login"
+                  to="/"
                   className="font-medium text-green-700 hover:text-green-800"
                 >
                   Login
