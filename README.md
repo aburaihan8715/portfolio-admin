@@ -1,68 +1,90 @@
-# Project : asgmt9_multi_vendor_e_commerce_client
-
-## Live link client:
-
-https://asgmt9-multi-vendor-e-commerce.netlify.app
-
-## Github link client:
-
-https://github.com/aburaihan8715/asgmt9_multi_vendor_e_commerce_ui
+# Project : Portfolio-api
 
 ## Live link server:
 
-https://asgmt9-multi-vendor-e-commerce-api.vercel.app
+https://portfolio-api-taupe.vercel.app
 
 ## Github link server:
 
-https://github.com/aburaihan8715/asgmt9_multi_vendor_e_commerce_api
+https://github.com/aburaihan8715/portfolio-api
 
-## Admin
+## Live link client:
 
-- email: aadmin@gmail.com
-- password: test1234
+https://portfolio-client-jade.vercel.app
 
-## Vendor
+## Github link client:
 
-- email: avendor@gmail.com
-- password: test1234
+https://github.com/aburaihan8715/portfolio-client
 
-## Customer
+## Live link admin:
 
-- email: acustomer@gmail.com
+https://admin-dashboard-for-portfolio.netlify.app
+
+## Github link admin:
+
+https://github.com/aburaihan8715/portfolio-admin
+
+## Admin credentials
+
+- email: admin@gmail.com
 - password: test1234
 
 ## Technologies used:
 
 1. Typescript
 2. React
-3. Tailwind css
+3. Redux
 
 ## Packages used:
 
-1. redux and redux-toolkit
+1. zod
 2. react-hook-form
-3. zod
-4. react rating
-5. eslint
-6. stripe
-7. react icons
-8. motion
-9. react-router
-10. sooner
+3. motion
+4. react-icons
+5. react-quill
+6. react-scroll-to-top
+7. sonner
+8. sweetalert2
 
 ## Deploy
 
-- Netlify
+- netlify
 
 ## Features
 
-- authentication
+### authentication
 
-1. register user
-2. login user
-3. update profile
-4. change password
-5. forget and reset password
+- register user
+- login user
+- update profile
+- change password
+- forget and reset password
+
+### experiences
+
+- add experience
+- delete experience
+- get experience
+
+### projects
+
+add projects
+delete projects
+get projects
+
+### blogs
+
+add blogs
+delete blogs
+get blogs
+
+### skills
+
+add skills
+delete skills
+get skills
+
+## Scripts
 
 ```js
     "dev": "vite",
