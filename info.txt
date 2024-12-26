@@ -1,19 +1,9 @@
 
-
-
-// NOTE: delete package-lock.json and install yarn.lock
-
-
-
-
-
-
 // colors
 primary
 #085749
 accent
 #7F1153
-
 
 
 https://images.pexels.com/photos/5475752/pexels-photo-5475752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1
@@ -22,6 +12,32 @@ https://images.pexels.com/photos/927629/pexels-photo-927629.jpeg?auto=compress&c
 
 https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png
 
+
+
+============need to be submitted=========
+
+
+## Live link server:
+https://portfolio-api-taupe.vercel.app
+
+## Github link server:
+https://github.com/aburaihan8715/portfolio-api
+
+## Live link client:
+https://portfolio-client-jade.vercel.app
+
+## Github link client:
+https://github.com/aburaihan8715/portfolio-client
+
+## Live link admin:
+https://admin-dashboard-for-portfolio.netlify.app
+
+## Github link admin:
+https://github.com/aburaihan8715/portfolio-admin
+
+## Admin credentials
+- email: admin@gmail.com
+- password: test1234
 
 
 

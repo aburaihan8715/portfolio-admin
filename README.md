@@ -1,4 +1,4 @@
-# Project : Portfolio-api
+# Project : Portfolio-admin
 
 ## Live link server:
 
@@ -42,9 +42,8 @@ https://github.com/aburaihan8715/portfolio-admin
 3. motion
 4. react-icons
 5. react-quill
-6. react-scroll-to-top
-7. sonner
-8. sweetalert2
+6. sonner
+7. sweetalert2
 
 ## Deploy
 
