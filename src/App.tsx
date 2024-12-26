@@ -15,6 +15,8 @@ import NotFound from './pages/not-found';
 import AdminDashboard from './pages/admin-view/dashboard';
 
 import UnauthPage from './pages/unauth';
+import CreateBlog from './pages/admin-view/create-blog';
+import CreateProject from './pages/admin-view/create-project';
 
 const App = () => {
   return (
@@ -35,6 +37,8 @@ const App = () => {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="create-blog" element={<CreateBlog />} />
+          <Route path="create-project" element={<CreateProject />} />
         </Route>
 
         {/* ===== for unauth=====*/}

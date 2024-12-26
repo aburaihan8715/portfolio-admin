@@ -105,8 +105,8 @@ const UpdateProfilePage = () => {
   return (
     <>
       {singleUserLoading || (updateUserLoading && <LoadingWithOverlay />)}
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 py-10 md:mt-0">
-        <div className="w-full max-w-lg space-y-6 rounded-lg bg-white p-8 shadow-md">
+      <div className="flex items-center justify-center min-h-screen py-10 bg-gray-100 md:mt-0">
+        <div className="w-full max-w-lg p-8 space-y-6 bg-white rounded-lg shadow-md">
           <div className="flex justify-center">
             <SectionHeading heading="Update your profile" />
           </div>
@@ -151,43 +151,6 @@ const UpdateProfilePage = () => {
               )}
             </div>
 
-            <div className="form-group">
-              <label htmlFor="phone" className="text-gray-700">
-                Phone
-              </label>
-              <input
-                id="phone"
-                type="text"
-                {...register('phone')}
-                className={`w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                  errors.phone ? 'border-red-500' : ''
-                }`}
-              />
-              {errors.phone && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.phone?.message}
-                </p>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="address" className="text-gray-700">
-                Address
-              </label>
-              <textarea
-                id="address"
-                {...register('address')}
-                className={`w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                  errors.address ? 'border-red-500' : ''
-                }`}
-              />
-              {errors.address && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.address?.message}
-                </p>
-              )}
-            </div>
-
             <div className="">
               {/* Show the preview if a file is selected */}
               {preview ? (
@@ -196,7 +159,7 @@ const UpdateProfilePage = () => {
                   alt="User photo preview"
                   width={96}
                   height={96}
-                  className="mb-4 h-24 w-24 rounded-full object-cover"
+                  className="object-cover w-24 h-24 mb-4 rounded-full"
                 />
               ) : (
                 <img
@@ -208,7 +171,7 @@ const UpdateProfilePage = () => {
                   alt="User photo"
                   width={96}
                   height={96}
-                  className="mb-4 h-24 w-24 rounded-full object-cover"
+                  className="object-cover w-24 h-24 mb-4 rounded-full"
                 />
               )}
 
@@ -221,7 +184,7 @@ const UpdateProfilePage = () => {
               />
               <label
                 htmlFor="photo"
-                className="ml-2 flex w-fit cursor-pointer items-center gap-2 text-xl text-gray-700"
+                className="flex items-center gap-2 ml-2 text-xl text-gray-700 cursor-pointer w-fit"
               >
                 <FaPlusSquare />
                 <span>Image</span>

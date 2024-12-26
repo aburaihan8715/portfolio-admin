@@ -3,13 +3,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { AuthSchema } from '@/schemas/auth.schema';
+
 import { Button } from '@/components/ui/button';
 import SubHeading from '@/components/common/sub-heading';
 import { Link, useSearchParams } from 'react-router';
-import { useResetPasswordMutation } from '@/redux/api/authApi';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { toast } from 'sonner';
+import { useResetPasswordMutation } from '@/redux/api/userApi';
+import { UserSchema } from '@/schemas/user.schema';
 
 type TResetPasswordFormValues = {
   newPassword: string;
@@ -27,7 +28,7 @@ const ResetPasswordPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<TResetPasswordFormValues>({
-    resolver: zodResolver(AuthSchema.resetPasswordSchema),
+    resolver: zodResolver(UserSchema.resetPasswordSchema),
   });
 
   const [resetPasswordMutation, { isLoading }] =

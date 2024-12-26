@@ -2,8 +2,8 @@ import { baseApi } from '@/redux/api/baseApi';
 
 const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // CREATE USER
-    userRegister: builder.mutation({
+    // REGISTER
+    register: builder.mutation({
       query: (registerData) => ({
         url: '/api/v1/users/register',
         method: 'POST',
@@ -12,25 +12,13 @@ const userApi = baseApi.injectEndpoints({
       invalidatesTags: ['users'],
     }),
 
-    // GET ALL USERS
-    getAllUsers: builder.query({
-      query: ({ searchQuery, page, limit }) => {
-        let queryString = `/api/v1/users`;
-
-        const params = new URLSearchParams();
-
-        if (searchQuery) params.append('searchTerm', searchQuery);
-        if (page) params.append('page', page);
-        if (limit) params.append('limit', limit);
-
-        if (params.toString()) queryString += `?${params.toString()}`;
-
-        return {
-          url: queryString,
-          method: 'GET',
-        };
-      },
-      providesTags: ['users'],
+    // LOGIN
+    login: builder.mutation({
+      query: (loginData) => ({
+        url: '/api/v1/users/login',
+        method: 'POST',
+        body: loginData,
+      }),
     }),
 
     // GET ONE
@@ -44,18 +32,6 @@ const userApi = baseApi.injectEndpoints({
     }),
 
     // UPDATE ROLE
-    makeAdmin: builder.mutation({
-      query: (data) => {
-        return {
-          url: `/api/v1/users/make-admin`,
-          method: 'PATCH',
-          body: data,
-        };
-      },
-      invalidatesTags: ['users'],
-    }),
-
-    // UPDATE ROLE
     updateProfile: builder.mutation({
       query: (data) => {
         return {
@@ -66,13 +42,46 @@ const userApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['users'],
     }),
+
+    // change password
+    changePassword: builder.mutation({
+      query: (passwordData) => ({
+        url: '/api/v1/users/change-password',
+        method: 'POST',
+        body: passwordData,
+      }),
+    }),
+
+    // forget password
+    forgetPassword: builder.mutation({
+      query: (email) => ({
+        url: '/api/v1/users/forget-password',
+        method: 'POST',
+        body: email,
+      }),
+    }),
+
+    // reset password
+    resetPassword: builder.mutation({
+      query: ({ token, ...bodyData }) => ({
+        url: '/api/v1/users/reset-password',
+        method: 'POST',
+        body: bodyData,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 
 export const {
-  useUserRegisterMutation,
-  useGetAllUsersQuery,
-  useMakeAdminMutation,
   useGetSingleUserQuery,
   useUpdateProfileMutation,
+  useLoginMutation,
+  useChangePasswordMutation,
+  useForgetPasswordMutation,
+  useResetPasswordMutation,
+  useRegisterMutation,
 } = userApi;

@@ -5,14 +5,16 @@ import { motion } from 'motion/react';
 
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { AuthSchema } from '@/schemas/auth.schema';
-import { Link, useLocation, useNavigate } from 'react-router';
-import { useAppDispatch } from '@/redux/hooks';
-import { useLoginMutation } from '@/redux/api/authApi';
+
+import { Link, Navigate, useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
 import { toast } from 'sonner';
 import { setUser } from '@/redux/features/authSlice';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { Button } from '@/components/ui/button';
+import { useLoginMutation } from '@/redux/api/userApi';
+import { UserSchema } from '@/schemas/user.schema';
 
 interface LoginFormValues {
   email: string;
@@ -25,7 +27,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(AuthSchema.loginSchema),
+    resolver: zodResolver(UserSchema.loginSchema),
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -35,8 +37,10 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const location = useLocation();
-  // const user = useAppSelector((state) => state.auth.user);
+
+  const isAuthenticated = useAppSelector(
+    (state) => state.auth.isAuthenticated,
+  );
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -48,15 +52,12 @@ const LoginPage = () => {
         password: data.password,
       };
       const res = await login(userInfo).unwrap();
-      const role = res.data?.user?.role;
-      const navigateTo =
-        location?.state?.from?.pathname || `/${role}/dashboard`;
       dispatch(
         setUser({ user: res.data?.user, token: res.data?.accessToken }),
       );
 
       toast.success('login success!', { id: toastId, duration: 2000 });
-      navigate(`${navigateTo}`);
+      navigate(`/admin/dashboard`);
     } catch (error: any) {
       console.log(error);
       const message = error.data.message || 'Failed to login';
@@ -64,9 +65,9 @@ const LoginPage = () => {
     }
   };
 
-  // if (user) {
-  //   return <Navigate to={`/${user.role}/dashboard`} replace={true} />;
-  // }
+  if (isAuthenticated) {
+    return <Navigate to={`/admin/dashboard`} replace={true} />;
+  }
 
   return (
     <>

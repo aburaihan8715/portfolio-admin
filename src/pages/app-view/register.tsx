@@ -1,26 +1,24 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { motion } from 'motion/react';
-
-import SectionHeading from '@/components/common/section-heading';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router';
-import { useUserRegisterMutation } from '@/redux/api/userApi';
-import { useAppDispatch } from '@/redux/hooks';
+import { Link, Navigate, useNavigate } from 'react-router';
 import { toast } from 'sonner';
+
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import SectionHeading from '@/components/common/section-heading';
 import { UserSchema } from '@/schemas/user.schema';
 import { setUser } from '@/redux/features/authSlice';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { Button } from '@/components/ui/button';
+import { useRegisterMutation } from '@/redux/api/userApi';
 
 type TRegisterFormData = {
   name: string;
   email: string;
   password: string;
   passwordConfirm: string;
-  role: 'vendor' | 'customer';
 };
 
 const RegisterPage = () => {
@@ -42,25 +40,25 @@ const RegisterPage = () => {
     setShowPasswordConfirm((prev) => !prev);
   };
 
-  const [userRegister, { isLoading }] = useUserRegisterMutation();
+  const [registerMutation, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  // const user = useAppSelector((state) => state.auth.user);
+  const isAuthenticated = useAppSelector(
+    (state) => state.auth.isAuthenticated,
+  );
 
   const onSubmit = async (data: TRegisterFormData) => {
     const toastId = toast.loading('loading...');
     try {
       const registerData = { ...data };
-      const res = await userRegister(registerData).unwrap();
-
-      const role = res.data?.user?.role;
+      const res = await registerMutation(registerData).unwrap();
 
       dispatch(
         setUser({ user: res.data?.user, token: res.data?.accessToken }),
       );
 
       toast.success('Register success!', { id: toastId, duration: 2000 });
-      navigate(`/dashboard/${role}/home`);
+      navigate(`/`);
     } catch (error: any) {
       console.log(error);
       const message = error.data.message || 'Failed to register!';
@@ -68,10 +66,9 @@ const RegisterPage = () => {
     }
   };
 
-  // if (user) {
-  //   return <Navigate to={`/${user.role}/dashboard`} replace={true} />;
-  // }
-
+  if (isAuthenticated) {
+    return <Navigate to={`/admin/dashboard`} replace={true} />;
+  }
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
@@ -218,44 +215,6 @@ const RegisterPage = () => {
                   {errors.passwordConfirm && (
                     <p className="mt-1 text-sm text-red-600">
                       {errors.passwordConfirm.message}
-                    </p>
-                  )}
-                </motion.div>
-              </div>
-
-              <div>
-                {/* Register As Section */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
-                >
-                  <label className="block text-sm font-medium text-green-700">
-                    Register As
-                  </label>
-                  <div className="mt-2 space-y-2">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        value="vendor"
-                        {...register('role')}
-                        className="mr-2 text-green-700 focus:ring-green-700"
-                      />
-                      Vendor
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        value="customer"
-                        {...register('role')}
-                        className="mr-2 text-green-700 focus:ring-green-700"
-                      />
-                      Customer
-                    </label>
-                  </div>
-                  {errors.role && (
-                    <p className="mt-2 text-sm text-red-600">
-                      {errors.role.message}
                     </p>
                   )}
                 </motion.div>
