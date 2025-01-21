@@ -14,8 +14,11 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button onClick={handleLogout} className="flex items-center space-x-2">
-      <FaSignOutAlt /> {/* FontAwesome logout icon */}
+    <Button
+      onClick={handleLogout}
+      className="flex items-center space-x-2 transition duration-300 text-green-950 hover:bg-gray-500/10"
+    >
+      <FaSignOutAlt />
       <span>Logout</span>
     </Button>
   );

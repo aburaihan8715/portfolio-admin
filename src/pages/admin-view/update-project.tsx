@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProjectSchema } from '@/schemas/project.schema';
-import { useCreateProjectMutation } from '@/redux/api/projectApi';
+import {
+  useGetSingleProjectQuery,
+  useUpdateProjectMutation,
+} from '@/redux/api/projectApi';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
 import { toast } from 'sonner';
 import { FaPlusSquare } from 'react-icons/fa';
+import { useNavigate, useParams } from 'react-router';
 
-// Define form input types
-
-type TProjectFormValues = {
+type TFormValues = {
   name: string;
   type: string;
   overview: string;
@@ -18,42 +20,68 @@ type TProjectFormValues = {
   links: string;
 };
 
-const CreateProject: React.FC = () => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+const UpdateProject: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+  const { data: projectData, isLoading: isProjectLoading } =
+    useGetSingleProjectQuery(id);
+  const project = useMemo(
+    () => projectData?.data || {},
+    [projectData?.data],
+  );
+
+  const [imagePreview, setImagePreview] = useState(
+    project?.coverImage || '',
+  );
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
-  } = useForm<TProjectFormValues>({
-    resolver: zodResolver(ProjectSchema.createProject),
+  } = useForm<TFormValues>({
+    resolver: zodResolver(ProjectSchema.updateProject),
+    defaultValues: {
+      name: project?.name || '',
+      type: project?.type || '',
+      overview: project?.overview || '',
+      techStack: project?.techStack || '',
+      links: project?.links || '',
+    },
   });
 
-  const [createProjectMutation, { isLoading }] =
-    useCreateProjectMutation();
-  const onSubmit = async (data: TProjectFormValues) => {
+  const [updateProjectMutation, { isLoading: isProjectUpdateLoading }] =
+    useUpdateProjectMutation();
+  const onSubmit = async (data: TFormValues) => {
     const toastId = toast.loading('loading...');
+
     try {
-      const projectData = {
-        ...data,
-      };
       const formData = new FormData();
-      formData.append('data', JSON.stringify(projectData));
+      formData.append('data', JSON.stringify(data));
       if (file) {
         formData.append('file', file);
       }
 
-      await createProjectMutation(formData);
-      toast.success('Project created successfully!', {
+      // console.log('Form Data🔥', Object.fromEntries(formData));
+      const projectData = {
+        projectId: id,
+        updatedData: formData,
+      };
+
+      await updateProjectMutation(projectData);
+      toast.success('Project updated successfully!', {
         id: toastId,
         duration: 2000,
       });
       reset();
-      setImagePreview(null);
+      setImagePreview('');
+      navigate('/admin/all-projects');
     } catch (error: any) {
       console.log(error);
-      const message = error.data.message || 'Failed to create project';
+      const message = error.data.message || 'Failed to update project';
       toast.error(message, { id: toastId, duration: 2000 });
     }
   };
@@ -61,21 +89,43 @@ const CreateProject: React.FC = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select a valid image file');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('File size exceeds 5MB');
+        return;
+      }
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
+      reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
       setFile(file);
     }
   };
 
+  // Update form values when postData is loaded
+  useEffect(() => {
+    if (Object.keys(project).length > 0) {
+      const { name, type, overview, techStack, links, coverImage } =
+        project;
+      setValue('name', name || '');
+      setValue('type', type || '');
+      setValue('overview', overview || '');
+      setValue('techStack', techStack.toString() || '');
+      setValue('links', links.toString() || '');
+      setImagePreview(coverImage || '');
+    }
+  }, [project, setValue]);
+
   return (
     <>
-      {isLoading && <LoadingWithOverlay />}
+      {(isProjectLoading || isProjectUpdateLoading) && (
+        <LoadingWithOverlay />
+      )}
       <div className="mx-auto w-full max-w-4xl p-6">
         <h2 className="mb-6 text-2xl font-bold text-gray-800">
-          Create Project
+          Update Project
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Project Name */}
@@ -86,6 +136,7 @@ const CreateProject: React.FC = () => {
             >
               Project Name
             </label>
+
             <div className="flex-1">
               <input
                 type="text"
@@ -96,12 +147,12 @@ const CreateProject: React.FC = () => {
                 }`}
                 {...register('name')}
               />
-              {errors.name && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.name.message}
-                </p>
-              )}
             </div>
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.name.message}
+              </p>
+            )}
           </div>
 
           {/* Project Type */}
@@ -112,6 +163,7 @@ const CreateProject: React.FC = () => {
             >
               Project Type
             </label>
+
             <div className="flex-1">
               <input
                 type="text"
@@ -152,14 +204,15 @@ const CreateProject: React.FC = () => {
                       className="mb-2 h-[250px] w-full rounded object-cover"
                     />
                   )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="coverImage"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
                 </div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="coverImage"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
+
                 <label
                   htmlFor="coverImage"
                   className="mt-2 flex cursor-pointer items-center justify-center gap-2 rounded border border-green-300 py-2 text-green-700"
@@ -217,6 +270,7 @@ const CreateProject: React.FC = () => {
                 }`}
                 {...register('techStack')}
               />
+
               {errors.techStack && (
                 <p className="mt-1 text-sm text-red-500">
                   {errors.techStack.message}
@@ -244,6 +298,7 @@ const CreateProject: React.FC = () => {
                 }`}
                 {...register('links')}
               />
+
               {errors.links && (
                 <p className="mt-1 text-sm text-red-500">
                   {errors.links.message}
@@ -256,7 +311,7 @@ const CreateProject: React.FC = () => {
           <div className="mt-6 flex justify-end">
             <button
               type="submit"
-              className="w-[250px] rounded-md bg-gray-400 px-4 py-2 text-white transition duration-300 hover:bg-gray-500 focus:outline-none"
+              className="w-[200px] rounded-md bg-gray-400 px-4 py-2 text-white transition duration-300 hover:bg-gray-500 focus:outline-none"
             >
               Submit
             </button>
@@ -267,4 +322,4 @@ const CreateProject: React.FC = () => {
   );
 };
 
-export default CreateProject;
+export default UpdateProject;

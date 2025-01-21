@@ -6,7 +6,7 @@ const BrandLogo = () => {
       <p className="text-xl text-primary">
         <FaArtstation />
       </p>
-      <p className="text-2xl font-semibold text-transparent text-gray-700 bg-gradient-to-r from-orange-600 via-green-700 to-fuchsia-700 bg-clip-text">
+      <p className="text-2xl font-semibold text-transparent text-gray-700 bg-gradient-to-r from-green-600 to-fuchsia-700 bg-clip-text">
         Admin Panel
       </p>
     </div>

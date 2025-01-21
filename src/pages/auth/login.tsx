@@ -26,6 +26,7 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue, // Import this function from react-hook-form
   } = useForm<LoginFormValues>({
     resolver: zodResolver(UserSchema.loginSchema),
   });
@@ -65,6 +66,11 @@ const LoginPage = () => {
     }
   };
 
+  const handleAddCredentials = () => {
+    setValue('email', 'admin@gmail.com');
+    setValue('password', 'test1234');
+  };
+
   if (isAuthenticated) {
     return <Navigate to={`/admin/dashboard`} replace={true} />;
   }
@@ -72,18 +78,27 @@ const LoginPage = () => {
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
-      <div className="mt-[80px] flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/5475752/pexels-photo-5475752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
+      <div className="flex min-h-screen justify-center bg-gray-50 bg-[url('https://images.pexels.com/photos/5475752/pexels-photo-5475752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat sm:px-6 md:mt-0 md:py-12 lg:px-8">
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
-        <div className="relative z-10 flex justify-center w-full">
+        <div className="relative z-10 flex w-full justify-center">
           <motion.div
-            className="w-full max-w-md p-1 bg-white rounded-lg shadow-lg md:p-8"
+            className="w-full max-w-md rounded-lg bg-white p-1 shadow-lg md:p-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex justify-center mb-6">
+            <div className="mb-6 flex justify-center">
               <SectionHeading heading="Login" />
+            </div>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={handleAddCredentials}
+                className="rounded bg-green-700 px-4 py-2 text-white hover:bg-green-800"
+              >
+                Add Credentials
+              </button>
             </div>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div className="space-y-4">
@@ -100,7 +115,7 @@ const LoginPage = () => {
                       Email
                     </label>
                     <Link
-                      to="/forget-password"
+                      to="/auth/forget-password"
                       className="text-sm text-green-700 hover:text-green-800"
                     >
                       Forget Password?
@@ -156,7 +171,7 @@ const LoginPage = () => {
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
-                      className="absolute inset-y-0 flex items-center text-gray-500 right-3 hover:text-green-700"
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-green-700"
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
@@ -184,7 +199,7 @@ const LoginPage = () => {
               <p className="text-sm text-gray-600">
                 Don&apos;t have an account?{' '}
                 <Link
-                  to="/register"
+                  to="/auth/register"
                   className="font-medium text-green-700 hover:text-green-800"
                 >
                   Register

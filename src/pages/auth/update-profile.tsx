@@ -21,8 +21,6 @@ import { Button } from '@/components/ui/button';
 interface IUpdateProfileFormData {
   name: string;
   email: string;
-  phone: string;
-  address: string;
 }
 
 const UpdateProfilePage = () => {
@@ -48,8 +46,6 @@ const UpdateProfilePage = () => {
     defaultValues: {
       name: '',
       email: '',
-      phone: '',
-      address: '',
     },
   });
 
@@ -58,8 +54,6 @@ const UpdateProfilePage = () => {
       reset({
         name: user.name || '',
         email: user.email || '',
-        phone: user.phone || '',
-        address: user.address || '',
       });
     }
   }, [user, reset]);
@@ -105,8 +99,8 @@ const UpdateProfilePage = () => {
   return (
     <>
       {singleUserLoading || (updateUserLoading && <LoadingWithOverlay />)}
-      <div className="flex items-center justify-center min-h-screen py-10 bg-gray-100 md:mt-0">
-        <div className="w-full max-w-lg p-8 space-y-6 bg-white rounded-lg shadow-md">
+      <div className="flex min-h-screen items-center justify-center rounded-md py-10 md:mt-0 md:bg-gray-300/20">
+        <div className="w-full max-w-lg space-y-6 rounded-lg bg-white p-8 shadow-md">
           <div className="flex justify-center">
             <SectionHeading heading="Update your profile" />
           </div>
@@ -159,7 +153,7 @@ const UpdateProfilePage = () => {
                   alt="User photo preview"
                   width={96}
                   height={96}
-                  className="object-cover w-24 h-24 mb-4 rounded-full"
+                  className="mb-4 h-24 w-24 rounded-full object-cover"
                 />
               ) : (
                 <img
@@ -171,7 +165,7 @@ const UpdateProfilePage = () => {
                   alt="User photo"
                   width={96}
                   height={96}
-                  className="object-cover w-24 h-24 mb-4 rounded-full"
+                  className="mb-4 h-24 w-24 rounded-full object-cover"
                 />
               )}
 
@@ -184,7 +178,7 @@ const UpdateProfilePage = () => {
               />
               <label
                 htmlFor="photo"
-                className="flex items-center gap-2 ml-2 text-xl text-gray-700 cursor-pointer w-fit"
+                className="ml-2 flex w-fit cursor-pointer items-center gap-2 text-xl text-gray-700"
               >
                 <FaPlusSquare />
                 <span>Image</span>

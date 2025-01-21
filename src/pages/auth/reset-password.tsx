@@ -62,8 +62,8 @@ const ResetPasswordPage: React.FC = () => {
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
-      <div className="mt-[80px] flex min-h-screen items-center justify-center bg-gray-100 md:mt-0">
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 md:mt-0">
+        <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-md">
           <div>
             <SubHeading subHeading="Reset Password" />
           </div>
@@ -94,7 +94,7 @@ const ResetPasswordPage: React.FC = () => {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute text-gray-600 right-3 top-9 focus:outline-none"
+                className="absolute right-3 top-9 text-gray-600 focus:outline-none"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
@@ -116,7 +116,7 @@ const ResetPasswordPage: React.FC = () => {
           <div className="mt-4 text-center">
             <Link
               to="/"
-              className="text-sm text-gray-600 hover:text-primary hover:underline"
+              className="hover:text-primary text-sm text-gray-600 hover:underline"
             >
               Back to Login
             </Link>

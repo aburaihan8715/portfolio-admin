@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+// import { useState } from 'react';
+// import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import SectionHeading from '@/components/common/section-heading';
 
 import LoadingWithOverlay from '@/components/common/loading-overlay';
@@ -16,10 +16,10 @@ interface IPasswordChangeFormValues {
 }
 
 const ChangePasswordPage = () => {
-  const [showPassword, setShowPassword] = useState({
-    oldPassword: false,
-    newPassword: false,
-  });
+  // const [showPassword, setShowPassword] = useState({
+  //   oldPassword: false,
+  //   newPassword: false,
+  // });
 
   const {
     register,
@@ -32,12 +32,12 @@ const ChangePasswordPage = () => {
   const [changePasswordMutation, { isLoading }] =
     useChangePasswordMutation();
 
-  const togglePasswordVisibility = (field: keyof typeof showPassword) => {
-    setShowPassword((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
-  };
+  // const togglePasswordVisibility = (field: keyof typeof showPassword) => {
+  //   setShowPassword((prev) => ({
+  //     ...prev,
+  //     [field]: !prev[field],
+  //   }));
+  // };
 
   const onSubmit = async (data: IPasswordChangeFormValues) => {
     const toastId = toast.loading('loading...');
@@ -57,8 +57,8 @@ const ChangePasswordPage = () => {
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
-      <div className="flex items-center justify-center min-h-screen py-10 bg-gray-100 md:mt-0">
-        <div className="w-full max-w-lg p-8 space-y-6 bg-white rounded-lg shadow-md">
+      <div className="flex min-h-screen items-center justify-center md:mt-0 md:bg-gray-100 md:py-10">
+        <div className="w-full max-w-lg space-y-6 rounded-lg bg-white p-8 shadow-md">
           <div className="flex justify-center">
             <SectionHeading heading="Change password" />
           </div>
@@ -69,22 +69,23 @@ const ChangePasswordPage = () => {
               <label htmlFor="oldPassword" className="block text-gray-700">
                 Old Password
               </label>
-              <div className="relative">
+              <div className="">
                 <input
                   id="oldPassword"
-                  type={showPassword.oldPassword ? 'text' : 'password'}
+                  // type={showPassword.oldPassword ? 'text' : 'password'}
+                  type="password"
                   {...register('oldPassword')}
                   className={`w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-green-500 ${
                     errors.oldPassword ? 'border-red-500' : ''
                   }`}
                 />
-                <button
+                {/* <button
                   type="button"
                   onClick={() => togglePasswordVisibility('oldPassword')}
-                  className="absolute inset-y-0 flex items-center text-gray-500 right-3"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
                 >
                   {showPassword.oldPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
+                </button> */}
               </div>
               {errors.oldPassword && (
                 <p className="mt-1 text-sm text-red-600">
@@ -98,22 +99,23 @@ const ChangePasswordPage = () => {
               <label htmlFor="newPassword" className="block text-gray-700">
                 New Password
               </label>
-              <div className="relative">
+              <div className="">
                 <input
                   id="newPassword"
-                  type={showPassword.newPassword ? 'text' : 'password'}
+                  // type={showPassword.newPassword ? 'text' : 'password'}
+                  type="password"
                   {...register('newPassword')}
                   className={`w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-green-500 ${
                     errors.newPassword ? 'border-red-500' : ''
                   }`}
                 />
-                <button
+                {/* <button
                   type="button"
                   onClick={() => togglePasswordVisibility('newPassword')}
-                  className="absolute inset-y-0 flex items-center text-gray-500 right-3"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
                 >
                   {showPassword.newPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
+                </button> */}
               </div>
               {errors.newPassword && (
                 <p className="mt-1 text-sm text-red-600">

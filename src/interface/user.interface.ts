@@ -6,8 +6,5 @@ export interface IUser {
   password: string;
   passwordConfirm: string | undefined;
   passwordChangedAt?: Date;
-  role: 'superAdmin' | 'admin' | 'customer' | 'vendor';
-  address?: string;
-  phone?: string;
-  isDeleted: boolean;
+  role: 'admin';
 }

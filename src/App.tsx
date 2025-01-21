@@ -1,48 +1,62 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
-import AppLayout from './components/layouts/app-layout';
-
-import LoginPage from './pages/app-view/login';
-import RegisterPage from './pages/app-view/register';
+import AuthLayout from './components/layouts/auth-layout';
+import LoginPage from './pages/auth/login';
+import RegisterPage from './pages/auth/register';
 import AdminLayout from './components/layouts/admin-layout';
-
-import ResetPasswordPage from './pages/app-view/reset-password';
-import ForgetPasswordPage from './pages/app-view/forget-password';
-import UpdateProfilePage from './pages/app-view/update-profile';
-import ChangePasswordPage from './pages/app-view/change-password';
-
+import ResetPasswordPage from './pages/auth/reset-password';
+import ForgetPasswordPage from './pages/auth/forget-password';
+import UpdateProfilePage from './pages/auth/update-profile';
+import ChangePasswordPage from './pages/auth/change-password';
 import NotFound from './pages/not-found';
-
 import AdminDashboard from './pages/admin-view/dashboard';
-
-import UnauthPage from './pages/unauth';
 import CreateBlog from './pages/admin-view/create-blog';
 import CreateProject from './pages/admin-view/create-project';
+import CheckAuth from './components/common/check-auth';
+import { useAppSelector } from './redux/hooks';
+import UpdateProject from './pages/admin-view/update-project';
+import { AllProjects } from './pages/admin-view/all-projects';
 
 const App = () => {
+  const { isAuthenticated } = useAppSelector((state) => state?.auth);
   return (
     <BrowserRouter>
       <Routes>
-        {/* ===== for app view =====*/}
-        <Route path="/" element={<AppLayout />}>
+        {/* ===== for root =====*/}
+        <Route path="/" element={<LoginPage />} />
+
+        {/* ===== for auth=====*/}
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
           <Route index element={<LoginPage />} />
-          <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
           <Route path="forget-password" element={<ForgetPasswordPage />} />
-          <Route path="update-profile" element={<UpdateProfilePage />} />
-          <Route path="change-password" element={<ChangePasswordPage />} />
         </Route>
 
         {/* ===== for admin =====*/}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
           <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="create-blog" element={<CreateBlog />} />
           <Route path="create-project" element={<CreateProject />} />
+          <Route path="update-project/:id" element={<UpdateProject />} />
+          <Route path="all-projects" element={<AllProjects />} />
+          <Route path="update-profile" element={<UpdateProfilePage />} />
+          <Route path="change-password" element={<ChangePasswordPage />} />
         </Route>
-
-        {/* ===== for unauth=====*/}
-        <Route path="/unauth" element={<UnauthPage />} />
 
         {/* ===== for not found =====*/}
         <Route path="*" element={<NotFound />} />

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
-
 import { useForm } from 'react-hook-form';
 import { FaPlusSquare } from 'react-icons/fa';
 
@@ -54,9 +53,7 @@ const CreateBlog = () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<TPostFormValues>({
-    // resolver: zodResolver(PostSchemas.postValidationSchema),
-  });
+  } = useForm<TPostFormValues>();
 
   const onSubmit = (data: TPostFormValues) => {
     const postData = {
@@ -71,6 +68,8 @@ const CreateBlog = () => {
     if (data.image) {
       formData.append('file', data.image);
     }
+
+    console.log('Form submitted:', formData);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,167 +84,145 @@ const CreateBlog = () => {
     }
   };
 
-  // if (!user) {
-  //   return <LoadingSpinner />;
-  // }
-
   return (
-    <>
-      {/* {isPending && <LoadingWithOverlay />} */}
-      <div className="container mx-auto md:p-5">
-        <h1 className="mb-5 text-xl font-bold text-green-700 md:text-2xl">
-          Create a New Post
-        </h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Title Input */}
-          <div>
-            <label
-              className="block mb-1 text-sm font-medium text-green-700"
-              htmlFor="title"
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              {...register('title')}
-              className={`block w-full border ${
-                errors.title ? 'border-red-500' : 'border-green-300'
-              } rounded-md p-2 focus:outline-none focus:ring focus:ring-green-300`}
-            />
-            {errors.title && (
-              <p className="text-xs text-red-500">
-                {errors.title.message}
-              </p>
-            )}
-          </div>
+    <div className="mx-auto w-full max-w-4xl bg-white p-6 text-gray-600">
+      <h1 className="mb-5 text-xl font-semibold md:text-2xl">
+        Create blog
+      </h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Title Field */}
+        <div className="flex items-center">
+          <label className="w-1/6 font-medium" htmlFor="title">
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            {...register('title', { required: 'Title is required' })}
+            className={`block flex-1 border ${
+              errors.title ? 'border-red-500' : 'border-green-300'
+            } rounded-md p-2 focus:outline-none focus:ring focus:ring-green-300`}
+          />
+          {/* {errors.title && (
+            <p className="text-xs text-red-500">{errors.title.message}</p>
+          )} */}
+        </div>
 
-          {/* Category Selection */}
-          <div>
-            <label
-              className="block mb-1 text-sm font-medium text-green-700"
-              htmlFor="category"
-            >
-              Category
-            </label>
-            <select
-              id="category"
-              {...register('category')}
-              className={`block w-full border ${
-                errors.category ? 'border-red-500' : 'border-green-300'
-              } rounded-md p-2 focus:outline-none focus:ring focus:ring-green-300`}
-            >
-              <option value="">Select a category</option>
-              <option value="Vegetables">Vegetables</option>
-              <option value="Flowers">Flowers</option>
-              <option value="Landscaping">Landscaping</option>
-              <option value="Others">Others</option>
-            </select>
-            {errors.category && (
-              <p className="text-xs text-red-500">
-                {errors.category.message}
-              </p>
-            )}
-          </div>
+        {/* Category Field */}
+        <div className="flex items-center">
+          <label className="w-1/6 font-medium" htmlFor="category">
+            Category
+          </label>
+          <select
+            id="category"
+            {...register('category', { required: 'Category is required' })}
+            className={`block flex-1 border ${
+              errors.category ? 'border-red-500' : 'border-green-300'
+            } rounded-md p-2 focus:outline-none focus:ring focus:ring-green-300`}
+          >
+            <option value="">Select a category</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Flowers">Flowers</option>
+            <option value="Landscaping">Landscaping</option>
+            <option value="Others">Others</option>
+          </select>
+          {/* {errors.category && (
+            <p className="text-xs text-red-500">
+              {errors.category.message}
+            </p>
+          )} */}
+        </div>
 
-          {/* Description Input */}
-          <div>
-            <label
-              className="block mb-1 text-sm font-medium text-green-700"
-              htmlFor="description"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              {...register('description')}
-              rows={3}
-              className={`block w-full border ${
-                errors.description ? 'border-red-500' : 'border-green-300'
-              } rounded-md p-2 focus:outline-none focus:ring focus:ring-green-300`}
-            />
-            {errors.description && (
-              <p className="text-xs text-red-500">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
+        {/* Description Field */}
+        <div className="flex items-start">
+          <label className="w-1/6 font-medium" htmlFor="description">
+            Description
+          </label>
+          <textarea
+            id="description"
+            {...register('description', {
+              required: 'Description is required',
+            })}
+            rows={3}
+            className={`block flex-1 border ${
+              errors.description ? 'border-red-500' : 'border-green-300'
+            } rounded-md p-2 focus:outline-none focus:ring focus:ring-green-300`}
+          />
+          {/* {errors.description && (
+            <p className="text-xs text-red-500">
+              {errors.description.message}
+            </p>
+          )} */}
+        </div>
 
-          {/* Image Input with Preview */}
-          <div>
+        {/* Image Upload Field */}
+        <div className="flex items-start">
+          <label className="w-1/6 font-medium">Image</label>
+          <div className="flex-1">
             {imagePreview ? (
-              <div className="relative h-[150px] w-full md:h-[400px]">
-                <img
-                  src={imagePreview}
-                  alt="User photo preview"
-                  className="object-cover rounded"
-                />
-              </div>
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="mb-2 h-[150px] w-full rounded object-cover"
+              />
             ) : (
-              <div className="relative h-[150px] w-full md:h-[400px]">
-                <img
-                  src={'https://dummyimage.com/600x400'}
-                  alt="User photo"
-                  className="object-cover rounded"
-                />
-              </div>
+              <img
+                src="https://dummyimage.com/600x400"
+                alt="Default Preview"
+                className="mb-2 h-[150px] w-full rounded object-cover"
+              />
             )}
-
             <input
               type="file"
               accept="image/*"
               id="photo"
               onChange={handleImageChange}
-              className="hidden w-full text-sm text-gray-500 file:mr-4 file:rounded file:border-0 file:bg-green-50 file:px-4 file:py-2 file:text-green-700 hover:file:bg-green-100"
+              className="hidden"
             />
             <label
               htmlFor="photo"
-              className="flex items-center justify-center gap-2 py-2 mt-4 text-xl text-center text-green-700 border border-green-300 rounded cursor-pointer"
+              className="mt-2 flex cursor-pointer items-center justify-center gap-2 rounded border border-green-300 py-2 text-green-700"
             >
-              <div className="flex items-center gap-3">
-                <FaPlusSquare />
-                <span>Image</span>
-              </div>
+              <FaPlusSquare />
+              <span>Upload Image</span>
             </label>
           </div>
+        </div>
 
-          {/* Quill Editor with Label */}
-          <div className="relative">
-            <label
-              className="block mb-1 text-sm font-medium text-green-700"
-              htmlFor="content"
-            >
-              Content
-            </label>
-            {/* Render ReactQuill only on client */}
-            <ReactQuill
-              placeholder="Write your advice..."
-              theme="snow"
-              value={watch('content') || ''}
-              onChange={(content) =>
-                setValue('content', content, { shouldValidate: true })
-              }
-              modules={modules}
-              formats={formats}
-              className="border border-green-300 rounded-md"
-            />
-            {errors.content && (
-              <p className="text-xs text-red-500">
-                {errors.content.message}
-              </p>
-            )}
-          </div>
+        {/* Content Field */}
+        <div className="flex items-start">
+          <label className="mt-2 w-1/6 font-medium" htmlFor="content">
+            Content
+          </label>
+          <ReactQuill
+            placeholder="Write your content..."
+            theme="snow"
+            value={watch('content') || ''}
+            onChange={(content) =>
+              setValue('content', content, { shouldValidate: true })
+            }
+            modules={modules}
+            formats={formats}
+            className="flex-1 rounded-md border border-green-300"
+          />
+          {/* {errors.content && (
+            <p className="text-xs text-red-500">
+              {errors.content.message}
+            </p>
+          )} */}
+        </div>
 
-          {/* Submit Button */}
+        {/* Submit Button */}
+        <div className="flex justify-end">
           <button
             type="submit"
-            className="w-full py-2 text-white transition duration-200 bg-green-700 rounded-md hover:bg-green-800"
+            className="w-[150px] rounded-md bg-gray-400 py-2 text-white transition duration-300 hover:bg-gray-500"
           >
             Submit
           </button>
-        </form>
-      </div>
-    </>
+        </div>
+      </form>
+    </div>
   );
 };
 

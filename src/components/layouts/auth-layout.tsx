@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 
-const AppLayout = () => {
+const AuthLayout = () => {
   return (
     <>
       <div className="min-h-screen">
@@ -10,4 +10,4 @@ const AppLayout = () => {
   );
 };
 
-export default AppLayout;
+export default AuthLayout;
