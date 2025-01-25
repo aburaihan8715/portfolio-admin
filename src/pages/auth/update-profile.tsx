@@ -67,11 +67,6 @@ const UpdateProfilePage = () => {
         formData.append('file', file);
       }
 
-      // NOTE: only for login purpose
-      // formData.forEach((value, key) => {
-      //   console.log(`${key}:`, value);
-      // });
-
       const res = await updateProfileMutation(formData).unwrap();
       const updatedUser = res?.data;
 
@@ -100,7 +95,7 @@ const UpdateProfilePage = () => {
     <>
       {singleUserLoading || (updateUserLoading && <LoadingWithOverlay />)}
       <div className="flex min-h-screen items-center justify-center rounded-md py-10 md:mt-0 md:bg-gray-300/20">
-        <div className="w-full max-w-lg space-y-6 rounded-lg bg-white p-8 shadow-md">
+        <div className="w-full max-w-lg space-y-6 rounded-lg bg-white md:p-8 md:shadow-md">
           <div className="flex justify-center">
             <SectionHeading heading="Update your profile" />
           </div>

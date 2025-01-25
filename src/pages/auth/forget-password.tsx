@@ -44,7 +44,7 @@ const ForgetPasswordPage: React.FC = () => {
     <>
       {isLoading && <LoadingWithOverlay />}
       <div className="flex h-screen items-center justify-center bg-gray-100 md:mt-0">
-        <div className="w-full max-w-md rounded-lg bg-white p-2 shadow-md md:p-8">
+        <div className="w-full max-w-md rounded-lg bg-white p-2 md:p-8 md:shadow-md">
           <div>
             <SubHeading subHeading="Forget Password" />
           </div>

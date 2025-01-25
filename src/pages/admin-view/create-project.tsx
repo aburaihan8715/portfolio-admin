@@ -80,16 +80,16 @@ const CreateProject: React.FC = () => {
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
-      <div className="w-full max-w-4xl p-6 mx-auto">
+      <div className="mx-auto w-full max-w-4xl md:p-6">
         <h2 className="mb-6 text-2xl font-bold text-gray-800">
           Create Project
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Project Name */}
-          <div className="flex items-center mb-4">
+          <div className="mb-4 flex items-center">
             <label
               htmlFor="name"
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
             >
               Project Name
             </label>
@@ -112,10 +112,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Project Type */}
-          <div className="flex items-center mb-4">
+          <div className="mb-4 flex items-center">
             <label
               htmlFor="type"
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
             >
               Project Type
             </label>
@@ -138,14 +138,14 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Image Upload Field */}
-          <div className="flex mb-4">
-            <label className="w-1/6 text-sm font-medium text-gray-700">
+          <div className="mb-4 flex">
+            <label className="hidden w-1/6 text-sm font-medium text-gray-700 md:block">
               Cover Image
             </label>
 
             <div className="flex-1">
               <div className="w-full">
-                <div className="p-2 border rounded-md">
+                <div className="rounded-md border p-2">
                   {imagePreview ? (
                     <img
                       src={imagePreview}
@@ -169,7 +169,7 @@ const CreateProject: React.FC = () => {
                 />
                 <label
                   htmlFor="coverImage"
-                  className="flex items-center justify-center gap-2 py-2 mt-2 text-green-700 border border-gray-300 rounded cursor-pointer"
+                  className="mt-2 flex cursor-pointer items-center justify-center gap-2 rounded border border-gray-300 py-2 text-green-700"
                 >
                   <FaPlusSquare />
                   <span>Upload Image</span>
@@ -179,10 +179,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Overview */}
-          <div className="flex mb-4">
+          <div className="mb-4 flex">
             <label
               htmlFor="overview"
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
             >
               Overview
             </label>
@@ -206,10 +206,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Tech Stack */}
-          <div className="flex items-center mb-4">
+          <div className="mb-4 flex items-center">
             <label
               htmlFor="techStack"
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
             >
               Tech Stack
             </label>
@@ -233,10 +233,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Links */}
-          <div className="flex items-center mb-4">
+          <div className="mb-4 flex items-center">
             <label
               htmlFor="links"
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
             >
               Links
             </label>
@@ -260,7 +260,7 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end mt-6">
+          <div className="mt-6 flex justify-end">
             <button
               type="submit"
               className="w-[200px] rounded-md bg-gray-400 py-2 text-white transition duration-300 hover:bg-gray-500 focus:outline-none"

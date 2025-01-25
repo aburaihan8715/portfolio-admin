@@ -63,7 +63,7 @@ const ResetPasswordPage: React.FC = () => {
     <>
       {isLoading && <LoadingWithOverlay />}
       <div className="flex min-h-screen items-center justify-center bg-gray-100 md:mt-0">
-        <div className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-md">
+        <div className="w-full max-w-md space-y-6 rounded-lg bg-white md:p-8 md:shadow-md">
           <div>
             <SubHeading subHeading="Reset Password" />
           </div>

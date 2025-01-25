@@ -109,7 +109,7 @@ const CreateBlog = () => {
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
-      <div className="w-full max-w-4xl p-6 mx-auto">
+      <div className="mx-auto w-full max-w-4xl md:p-6">
         <h1 className="mb-6 text-2xl font-bold text-gray-700">
           Create blog
         </h1>
@@ -117,7 +117,7 @@ const CreateBlog = () => {
           {/* Title Field */}
           <div className="flex items-center">
             <label
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
               htmlFor="title"
             >
               Title
@@ -144,7 +144,7 @@ const CreateBlog = () => {
           {/* Category Field */}
           <div className="flex items-center">
             <label
-              className="w-1/6 text-sm font-medium text-gray-600"
+              className="hidden w-1/6 text-sm font-medium text-gray-600 md:block"
               htmlFor="category"
             >
               Category
@@ -176,7 +176,7 @@ const CreateBlog = () => {
           {/* Description Field */}
           <div className="flex items-start">
             <label
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
               htmlFor="overview"
             >
               Overview
@@ -203,14 +203,14 @@ const CreateBlog = () => {
           </div>
 
           {/* Image Upload Field */}
-          <div className="flex mb-4">
-            <label className="w-1/6 text-sm font-medium text-gray-700">
+          <div className="mb-4 flex">
+            <label className="hidden w-1/6 text-sm font-medium text-gray-700 md:block">
               Cover Image
             </label>
 
             <div className="flex-1">
               <div className="w-full">
-                <div className="p-2 border rounded-md">
+                <div className="rounded-md border p-2">
                   {imagePreview ? (
                     <img
                       src={imagePreview}
@@ -234,7 +234,7 @@ const CreateBlog = () => {
                 />
                 <label
                   htmlFor="coverImage"
-                  className="flex items-center justify-center gap-2 py-2 mt-2 text-green-700 border border-gray-300 rounded cursor-pointer"
+                  className="mt-2 flex cursor-pointer items-center justify-center gap-2 rounded border border-gray-300 py-2 text-green-700"
                 >
                   <FaPlusSquare />
                   <span>Upload Image</span>
@@ -246,7 +246,7 @@ const CreateBlog = () => {
           {/* Content Field */}
           <div className="flex items-start">
             <label
-              className="w-1/6 text-sm font-medium text-gray-700"
+              className="hidden w-1/6 text-sm font-medium text-gray-700 md:block"
               htmlFor="content"
             >
               Content

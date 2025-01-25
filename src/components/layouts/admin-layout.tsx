@@ -9,7 +9,7 @@ const AdminLayout = () => {
           <AdminNavigation />
         </div>
 
-        <div className="mt-[80px] flex-1 overflow-auto p-5 sm:mt-0 md:flex-[4]">
+        <div className="mt-[80px] flex-1 overflow-auto p-1 sm:mt-0 md:flex-[4] md:p-5">
           <Outlet />
         </div>
       </div>

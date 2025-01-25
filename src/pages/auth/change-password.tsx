@@ -58,7 +58,7 @@ const ChangePasswordPage = () => {
     <>
       {isLoading && <LoadingWithOverlay />}
       <div className="flex min-h-screen items-center justify-center md:mt-0 md:bg-gray-100 md:py-10">
-        <div className="w-full max-w-lg space-y-6 rounded-lg bg-white p-8 shadow-md">
+        <div className="w-full max-w-lg space-y-6 rounded-lg bg-white md:p-8 md:shadow-md">
           <div className="flex justify-center">
             <SectionHeading heading="Change password" />
           </div>
