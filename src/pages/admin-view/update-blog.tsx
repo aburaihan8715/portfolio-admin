@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import { useForm } from 'react-hook-form';
@@ -6,8 +6,12 @@ import { FaPlusSquare } from 'react-icons/fa';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BlogSchema } from '@/schemas/blog.schema';
-import { useCreateBlogMutation } from '@/redux/api/blogApi';
+import {
+  useGetSingleBlogQuery,
+  useUpdateBlogMutation,
+} from '@/redux/api/blogApi';
 import LoadingWithOverlay from '@/components/common/loading-overlay';
+import { useNavigate, useParams } from 'react-router';
 
 type TBlogFormValues = {
   title: string;
@@ -50,21 +54,36 @@ const formats = [
   'code-block',
 ];
 
-const CreateBlog = () => {
+const UpdateBlog = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+
+  const { id } = useParams();
+  const { data: blogData, isLoading: isBlogLoading } =
+    useGetSingleBlogQuery(id);
+  const blog = useMemo(() => blogData?.data || {}, [blogData?.data]);
+
+  const navigate = useNavigate();
+
+  console.log('blog', blog);
   const {
     register,
     handleSubmit,
     setValue,
-    reset,
     watch,
     formState: { errors },
   } = useForm<TBlogFormValues>({
     resolver: zodResolver(BlogSchema.createBlog),
+    defaultValues: {
+      title: blog?.title || '',
+      overview: blog?.overview || '',
+      content: blog?.content || '',
+      category: blog?.category || '',
+    },
   });
 
-  const [createBlogMutation, { isLoading }] = useCreateBlogMutation();
+  const [updateBlogMutation, { isLoading: isBlogUpdateLoading }] =
+    useUpdateBlogMutation();
   const onSubmit = async (data: TBlogFormValues) => {
     const toastId = toast.loading('loading...');
     try {
@@ -74,16 +93,20 @@ const CreateBlog = () => {
         formData.append('file', file);
       }
 
-      await createBlogMutation(formData);
-      toast.success('Blog created successfully!', {
+      const blogData = {
+        blogId: id,
+        updatedData: formData,
+      };
+
+      await updateBlogMutation(blogData);
+      toast.success('Blog updated successfully!', {
         id: toastId,
         duration: 2000,
       });
-      reset();
-      setImagePreview(null);
+      navigate('/admin/all-blogs');
     } catch (error: any) {
       console.log(error);
-      const message = error.data.message || 'Failed to create Blog';
+      const message = error.data.message || 'Failed to update Blog';
       toast.error(message, { id: toastId, duration: 2000 });
     }
   };
@@ -106,12 +129,24 @@ const CreateBlog = () => {
     }
   };
 
+  // Update form values when postData is loaded
+  useEffect(() => {
+    if (Object.keys(blog).length > 0) {
+      const { title, overview, coverImage, category, content } = blog;
+      setValue('title', title || '');
+      setValue('overview', overview || '');
+      setValue('category', category || '');
+      setValue('content', content || '');
+      setImagePreview(coverImage || '');
+    }
+  }, [blog, setValue]);
+
   return (
     <>
-      {isLoading && <LoadingWithOverlay />}
+      {(isBlogLoading || isBlogUpdateLoading) && <LoadingWithOverlay />}
       <div className="w-full max-w-4xl p-6 mx-auto">
         <h1 className="mb-6 text-2xl font-bold text-gray-700">
-          Create blog
+          Update blog
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Title Field */}
@@ -160,10 +195,10 @@ const CreateBlog = () => {
                   errors.category ? 'border-red-500' : 'border-gray-300'
                 } w-full rounded-md border px-4 py-2 focus:outline-none focus:ring focus:ring-gray-300`}
               >
-                <option value="">Choose a category</option>
-                <option value="frontend">Frontend</option>
-                <option value="backend">Backend</option>
-                <option value="mixed">Mixed</option>
+                <option value="">choose a category</option>
+                <option value="frontend">frontend</option>
+                <option value="backend">backend</option>
+                <option value="mixed">mixed</option>
               </select>
               {errors.category && (
                 <p className="text-xs text-red-500">
@@ -285,4 +320,4 @@ const CreateBlog = () => {
   );
 };
 
-export default CreateBlog;
+export default UpdateBlog;

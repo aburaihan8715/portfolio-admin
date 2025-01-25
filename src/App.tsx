@@ -15,6 +15,8 @@ import CheckAuth from './components/common/check-auth';
 import { useAppSelector } from './redux/hooks';
 import UpdateProject from './pages/admin-view/update-project';
 import { AllProjects } from './pages/admin-view/all-projects';
+import { AllBlogs } from './pages/admin-view/all-blogs';
+import UpdateBlog from './pages/admin-view/update-blog';
 
 const App = () => {
   const { isAuthenticated } = useAppSelector((state) => state?.auth);
@@ -51,9 +53,13 @@ const App = () => {
           <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="create-blog" element={<CreateBlog />} />
+          <Route path="all-blogs" element={<AllBlogs />} />
+          <Route path="update-blog/:id" element={<UpdateBlog />} />
+
           <Route path="create-project" element={<CreateProject />} />
-          <Route path="update-project/:id" element={<UpdateProject />} />
           <Route path="all-projects" element={<AllProjects />} />
+          <Route path="update-project/:id" element={<UpdateProject />} />
+
           <Route path="update-profile" element={<UpdateProfilePage />} />
           <Route path="change-password" element={<ChangePasswordPage />} />
         </Route>

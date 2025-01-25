@@ -32,6 +32,7 @@ const CreateProject: React.FC = () => {
 
   const [createProjectMutation, { isLoading }] =
     useCreateProjectMutation();
+
   const onSubmit = async (data: TProjectFormValues) => {
     const toastId = toast.loading('loading...');
     try {
@@ -61,10 +62,16 @@ const CreateProject: React.FC = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select a valid image file');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('File size exceeds 5MB');
+        return;
+      }
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
+      reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
       setFile(file);
     }
@@ -73,16 +80,16 @@ const CreateProject: React.FC = () => {
   return (
     <>
       {isLoading && <LoadingWithOverlay />}
-      <div className="mx-auto w-full max-w-4xl p-6">
+      <div className="w-full max-w-4xl p-6 mx-auto">
         <h2 className="mb-6 text-2xl font-bold text-gray-800">
           Create Project
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Project Name */}
-          <div className="mb-4 flex items-center">
+          <div className="flex items-center mb-4">
             <label
               htmlFor="name"
-              className="w-1/4 text-sm font-medium text-gray-700"
+              className="w-1/6 text-sm font-medium text-gray-700"
             >
               Project Name
             </label>
@@ -91,9 +98,9 @@ const CreateProject: React.FC = () => {
                 type="text"
                 id="name"
                 placeholder="Enter project name"
-                className={`w-full rounded-md border px-4 py-2 ${
+                className={`${
                   errors.name ? 'border-red-500' : 'border-gray-300'
-                }`}
+                } w-full rounded-md border px-4 py-2 focus:outline-none focus:ring focus:ring-gray-300`}
                 {...register('name')}
               />
               {errors.name && (
@@ -105,10 +112,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Project Type */}
-          <div className="mb-4 flex items-center">
+          <div className="flex items-center mb-4">
             <label
               htmlFor="type"
-              className="w-1/4 text-sm font-medium text-gray-700"
+              className="w-1/6 text-sm font-medium text-gray-700"
             >
               Project Type
             </label>
@@ -117,9 +124,9 @@ const CreateProject: React.FC = () => {
                 type="text"
                 id="type"
                 placeholder="Enter project type"
-                className={`w-full rounded-md border px-4 py-2 ${
+                className={`${
                   errors.type ? 'border-red-500' : 'border-gray-300'
-                }`}
+                } w-full rounded-md border px-4 py-2 focus:outline-none focus:ring focus:ring-gray-300`}
                 {...register('type')}
               />
               {errors.type && (
@@ -131,25 +138,25 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Image Upload Field */}
-          <div className="mb-4 flex">
-            <label className="w-1/4 text-sm font-medium text-gray-700">
+          <div className="flex mb-4">
+            <label className="w-1/6 text-sm font-medium text-gray-700">
               Cover Image
             </label>
 
             <div className="flex-1">
               <div className="w-full">
-                <div className="rounded-md border p-2">
+                <div className="p-2 border rounded-md">
                   {imagePreview ? (
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="mb-2 h-[250px] w-full rounded object-cover"
+                      className="h-[250px] w-full rounded object-cover"
                     />
                   ) : (
                     <img
                       src="https://dummyimage.com/600x400"
                       alt="Default Preview"
-                      className="mb-2 h-[250px] w-full rounded object-cover"
+                      className="h-[250px] w-full rounded object-cover"
                     />
                   )}
                 </div>
@@ -162,7 +169,7 @@ const CreateProject: React.FC = () => {
                 />
                 <label
                   htmlFor="coverImage"
-                  className="mt-2 flex cursor-pointer items-center justify-center gap-2 rounded border border-green-300 py-2 text-green-700"
+                  className="flex items-center justify-center gap-2 py-2 mt-2 text-green-700 border border-gray-300 rounded cursor-pointer"
                 >
                   <FaPlusSquare />
                   <span>Upload Image</span>
@@ -172,10 +179,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Overview */}
-          <div className="mb-4 flex">
+          <div className="flex mb-4">
             <label
               htmlFor="overview"
-              className="w-1/4 text-sm font-medium text-gray-700"
+              className="w-1/6 text-sm font-medium text-gray-700"
             >
               Overview
             </label>
@@ -185,9 +192,9 @@ const CreateProject: React.FC = () => {
                 id="overview"
                 placeholder="Enter project overview"
                 rows={4}
-                className={`w-full rounded-md border px-4 py-2 ${
+                className={`${
                   errors.overview ? 'border-red-500' : 'border-gray-300'
-                }`}
+                } w-full rounded-md border px-4 py-2 focus:outline-none focus:ring focus:ring-gray-300`}
                 {...register('overview')}
               ></textarea>
               {errors.overview && (
@@ -199,10 +206,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Tech Stack */}
-          <div className="mb-4 flex items-center">
+          <div className="flex items-center mb-4">
             <label
               htmlFor="techStack"
-              className="w-1/4 text-sm font-medium text-gray-700"
+              className="w-1/6 text-sm font-medium text-gray-700"
             >
               Tech Stack
             </label>
@@ -212,9 +219,9 @@ const CreateProject: React.FC = () => {
                 type="text"
                 id="techStack"
                 placeholder="e.g., React, TypeScript, Tailwind"
-                className={`w-full rounded-md border px-4 py-2 ${
+                className={`${
                   errors.techStack ? 'border-red-500' : 'border-gray-300'
-                }`}
+                } w-full rounded-md border px-4 py-2 focus:outline-none focus:ring focus:ring-gray-300`}
                 {...register('techStack')}
               />
               {errors.techStack && (
@@ -226,12 +233,12 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Links */}
-          <div className="mb-4 flex items-center">
+          <div className="flex items-center mb-4">
             <label
               htmlFor="links"
-              className="w-1/4 text-sm font-medium text-gray-700"
+              className="w-1/6 text-sm font-medium text-gray-700"
             >
-              Links (comma-separated)
+              Links
             </label>
 
             <div className="flex-1">
@@ -239,9 +246,9 @@ const CreateProject: React.FC = () => {
                 type="text"
                 id="links"
                 placeholder="e.g., GitHub, Live Demo"
-                className={`w-full rounded-md border px-4 py-2 ${
+                className={`${
                   errors.links ? 'border-red-500' : 'border-gray-300'
-                }`}
+                } w-full rounded-md border px-4 py-2 focus:outline-none focus:ring focus:ring-gray-300`}
                 {...register('links')}
               />
               {errors.links && (
@@ -253,10 +260,10 @@ const CreateProject: React.FC = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="mt-6 flex justify-end">
+          <div className="flex justify-end mt-6">
             <button
               type="submit"
-              className="w-[250px] rounded-md bg-gray-400 px-4 py-2 text-white transition duration-300 hover:bg-gray-500 focus:outline-none"
+              className="w-[200px] rounded-md bg-gray-400 py-2 text-white transition duration-300 hover:bg-gray-500 focus:outline-none"
             >
               Submit
             </button>

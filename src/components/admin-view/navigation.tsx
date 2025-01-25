@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import {
   FaCog,
+  FaComments,
   FaEye,
   FaFolderPlus,
   FaHome,
@@ -23,7 +24,7 @@ const AdminNavigation = () => {
 
       <li className="flex">
         <ActiveLink
-          className="flex w-full items-center gap-2"
+          className="flex items-center w-full gap-2"
           to="/admin/dashboard"
         >
           <FaHome className="text-base" />
@@ -33,7 +34,7 @@ const AdminNavigation = () => {
 
       <li className="flex">
         <ActiveLink
-          className="flex w-full items-center gap-2"
+          className="flex items-center w-full gap-2"
           to="/admin/create-blog"
         >
           <FaPen className="text-base" />
@@ -43,7 +44,17 @@ const AdminNavigation = () => {
 
       <li className="flex">
         <ActiveLink
-          className="flex w-full items-center gap-2"
+          className="flex items-center w-full gap-2"
+          to="/admin/all-blogs"
+        >
+          <FaComments className="text-base" />
+          <span className="">All Blogs</span>
+        </ActiveLink>
+      </li>
+
+      <li className="flex">
+        <ActiveLink
+          className="flex items-center w-full gap-2"
           to="/admin/create-project"
         >
           <FaFolderPlus className="text-base" />
@@ -53,7 +64,7 @@ const AdminNavigation = () => {
 
       <li className="flex">
         <ActiveLink
-          className="flex w-full items-center gap-2"
+          className="flex items-center w-full gap-2"
           to="/admin/all-projects"
         >
           <FaEye className="text-base" />
@@ -66,7 +77,7 @@ const AdminNavigation = () => {
       </p>
       <li className="flex">
         <ActiveLink
-          className="flex w-full items-center gap-2"
+          className="flex items-center w-full gap-2"
           to="/admin/update-profile"
         >
           <FaCog className="text-base" />
@@ -75,7 +86,7 @@ const AdminNavigation = () => {
       </li>
       <li className="flex">
         <ActiveLink
-          className="flex w-full items-center gap-2"
+          className="flex items-center w-full gap-2"
           to="/admin/change-password"
         >
           <FaLock className="text-base" />
@@ -106,7 +117,7 @@ const AdminNavigation = () => {
           <div className="fixed top-0 z-20 flex h-[80px] w-full items-center justify-between bg-green-100 px-2">
             <button
               onClick={() => setOpen(!open)}
-              className="flex h-10 w-10 items-center justify-center rounded border border-gray-700/50 text-3xl"
+              className="flex items-center justify-center w-10 h-10 text-3xl border rounded border-gray-700/50"
             >
               {open ? <MdMenu /> : <MdClose />}
             </button>
